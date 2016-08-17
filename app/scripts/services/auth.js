@@ -41,6 +41,25 @@ angular.module('frontendStableApp')
             return ans;
         };
 
+        this.allowedForbidden = function (allowed, forbidden) {
+            if (typeof allowed !== 'object')
+                allowed = [allowed];
+            if (typeof forbidden !== 'object')
+                forbidden = [forbidden];
+
+            var allowedSum = 0;
+            for (var i = 0; i < allowed.length; i++)
+                if (that.roleValues.hasOwnProperty(allowed[i]))
+                    allowedSum += that.roleValues[allowed[i]];
+
+            var forbiddenSum = 0;
+            for (i = 0; i < forbidden.length; i++)
+                if (that.roleValues.hasOwnProperty(forbidden[i]))
+                    forbiddenSum += that.roleValues[forbidden[i]];
+
+            return (userRole & forbiddenSum) == 0 && (userRole & allowedSum) > 0;
+        };
+
         this.checkRole = function (roleName) {
             if (!that.roleValues[roleName])
                 throw "Invalid role name";

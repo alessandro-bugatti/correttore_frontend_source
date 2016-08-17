@@ -40,6 +40,9 @@ angular.module('frontendStableApp')
         };
 
         this.failureHandler = function (error) {
+            if (error.data.error != undefined)
+                return $q.reject(error.data.error);
+
             return $q.reject(error.data);
         }
     });

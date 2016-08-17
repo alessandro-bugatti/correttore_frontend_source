@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('MainCtrl', function (AuthService, TasksService, $log) {
+    .controller('MainCtrl', function (AuthService, GroupsService, $log) {
         this.awesomeThings = [
             'HTML5 Boilerplate',
             'AngularJS',
@@ -16,6 +16,9 @@ angular.module('frontendStableApp')
         ];
 
         AuthService.getSessionInfo()
+            .then(function () {
+                return GroupsService.updateGroup(7, 'test2');
+            })
             .then(function () {
                 console.log(arguments);
             })
