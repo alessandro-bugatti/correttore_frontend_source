@@ -13,6 +13,9 @@ angular.module('frontendStableApp')
             var headersObj = {};
             headersObj[Config.getAuthTokenName()] = authToken;
 
+            var multipartHeadersObj = {'Content-Type': undefined};
+            multipartHeadersObj[Config.getAuthTokenName()] = authToken;
+
             if (!authToken)
                 return $resource(Config.getServerPath() + 'public/' + path);
             else
@@ -23,7 +26,12 @@ angular.module('frontendStableApp')
                     'put': {method: 'PUT', headers: headersObj},
                     'query': {method: 'GET', isArray: true, headers: headersObj},
                     'remove': {method: 'DELETE', headers: headersObj},
-                    'delete': {method: 'DELETE', headers: headersObj}
+                    'delete': {method: 'DELETE', headers: headersObj},
+                    'create': {
+                        method: 'POST',
+                        transformRequest: angular.identity,
+                        headers: multipartHeadersObj
+                    }
                 });
         };
 
