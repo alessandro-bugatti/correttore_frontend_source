@@ -29,4 +29,9 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
+    })
+    .config(function (ConfigProvider) {
+        ConfigProvider.serverVersion = 'v1';
+        ConfigProvider.serverHost = 'https://auth-silex-test-alessandro-bugatti.c9users.io';
+        ConfigProvider.authTokenName = 'x-authorization-token';
     });
