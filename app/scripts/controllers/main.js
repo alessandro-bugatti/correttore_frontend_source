@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('MainCtrl', function (AuthService, TeachersService) {
+    .controller('MainCtrl', function (AuthService, TeachersService, $log) {
         this.awesomeThings = [
             'HTML5 Boilerplate',
             'AngularJS',
@@ -17,11 +17,15 @@ angular.module('frontendStableApp')
 
         AuthService.getSessionInfo()
             .then(function () {
-                return TeachersService.deleteTeacher(11);
+                $log.debug(AuthService.getRoleValue());
+                $log.debug(AuthService.getRolesArray());
+                $log.debug(AuthService.checkRole('student'));
+                $log.debug(AuthService.atLeast('teacher'));
             })
             .then(function () {
-                console.log(arguments[0]);
-            }, function () {
-                console.error(arguments[0]);
+                console.log(arguments);
+            })
+            .catch(function (err) {
+                $log.error(String(err));
             })
     });

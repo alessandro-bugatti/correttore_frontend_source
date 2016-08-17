@@ -9,9 +9,6 @@
  */
 angular.module('frontendStableApp')
     .service('ResourcesGeneratorService', function (Config, $resource, $q) {
-        console.debug(Config.getAuthTokenName());
-        console.debug(Config.getServerPath());
-
         this.getResource = function (authToken, path) {
             var headersObj = {};
             headersObj[Config.getAuthTokenName()] = authToken;

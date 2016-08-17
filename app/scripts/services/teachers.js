@@ -10,7 +10,7 @@
 angular.module('frontendStableApp')
     .service('TeachersService', function (ResourcesGeneratorService, AuthService, $q) {
         this.getList = function () {
-            if (!AuthService.isLogged)
+            if (!AuthService.isLogged || !AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
 
             return ResourcesGeneratorService.getResource(AuthService.getAuthToken(), 'teachers').query().$promise
@@ -18,7 +18,7 @@ angular.module('frontendStableApp')
         };
 
         this.getOneTeacher = function (teacherId) {
-            if (!AuthService.isLogged)
+            if (!AuthService.isLogged || !AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
 
             return ResourcesGeneratorService.getResource(AuthService.getAuthToken(), 'teachers/:id').get({id: teacherId}).$promise
@@ -26,7 +26,7 @@ angular.module('frontendStableApp')
         };
 
         this.addTeacher = function (name, surname, username, password) {
-            if (!AuthService.isLogged)
+            if (!AuthService.isLogged || !AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
 
             return ResourcesGeneratorService
@@ -42,7 +42,7 @@ angular.module('frontendStableApp')
         };
 
         this.updateTeacher = function (teacherId, name, surname, username, password) { // FIXME
-            if (!AuthService.isLogged)
+            if (!AuthService.isLogged || !AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
 
             return ResourcesGeneratorService
@@ -58,7 +58,7 @@ angular.module('frontendStableApp')
         };
 
         this.deleteTeacher = function (teacherId) {
-            if (!AuthService.isLogged)
+            if (!AuthService.isLogged || !AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
 
             return ResourcesGeneratorService
