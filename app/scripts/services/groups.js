@@ -48,5 +48,33 @@ angular.module('frontendStableApp')
                 .delete({id: groupId})
                 .$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
-        }
+        };
+
+        this.assignStudentToGroup = function (studentId, groupId) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            return ResourcesGeneratorService
+                .getResource(AuthService.getAuthToken(), 'groups/:groupId/student/:studentId')
+                .put({
+                    groupId: groupId,
+                    studentId: studentId
+                })
+                .$promise
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+        };
+
+        this.removeStudentFromGroup = function (studentId, groupId) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            return ResourcesGeneratorService
+                .getResource(AuthService.getAuthToken(), 'groups/:groupId/student/:studentId')
+                .delete({
+                    groupId: groupId,
+                    studentId: studentId
+                })
+                .$promise
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+        };
     });

@@ -23,7 +23,12 @@ angular.module('frontendStableApp')
                     'get': {method: 'GET', headers: headersObj},
                     'save': {method: 'POST', headers: headersObj},
                     'post': {method: 'POST', headers: headersObj},
-                    'put': {method: 'PUT', headers: headersObj},
+                    'put': {
+                        method: 'PUT', headers: headersObj, params: {
+                            studentId: '@studentId',
+                            groupId: '@groupId'
+                        }
+                    },
                     'query': {method: 'GET', isArray: true, headers: headersObj},
                     'remove': {method: 'DELETE', headers: headersObj},
                     'delete': {method: 'DELETE', headers: headersObj},

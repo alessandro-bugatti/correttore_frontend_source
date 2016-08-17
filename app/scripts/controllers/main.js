@@ -17,7 +17,7 @@ angular.module('frontendStableApp')
 
         AuthService.getSessionInfo()
             .then(function () {
-                return GroupsService.updateGroup(7, 'test2');
+                return GroupsService.removeStudentFromGroup(2, 2);
             })
             .then(function () {
                 console.log(arguments);
