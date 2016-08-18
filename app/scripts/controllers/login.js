@@ -10,7 +10,7 @@
 angular.module('frontendStableApp')
     .controller('LoginCtrl', function (AuthService, $scope, $location, $rootScope, $mdSidenav) {
         if (AuthService.isLogged()) {
-            $location.path('/');
+            loginCompletato();
             return;
         }
 
@@ -26,7 +26,11 @@ angular.module('frontendStableApp')
         function loginCompletato() {
             $rootScope.$emit('sidenav-open');
             $rootScope.$emit('toolbar-show');
-            $location.path('/');
+            if ($location.search().redirect) {
+                $location.path($location.search().redirect);
+                $location.search({});
+            } else
+                $location.path('/');
         }
 
         $scope.loading = false;

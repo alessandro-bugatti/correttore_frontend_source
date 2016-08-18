@@ -12,6 +12,7 @@ angular.module('frontendStableApp')
         var authToken = $window.localStorage.getItem('authToken');
         var isLogged = false;
         var userRole = 0;
+        var loginResponse = {};
 
         var that = this;
 
@@ -30,6 +31,10 @@ angular.module('frontendStableApp')
             'admin': 4,
             'teacher': 2,
             'student': 1
+        };
+
+        this.getLoginResponse = function () {
+            return loginResponse;
         };
 
         this.getRolesArray = function () {
@@ -113,6 +118,7 @@ angular.module('frontendStableApp')
                     $window.localStorage.setItem('authToken', response.token);
                     authToken = response.token;
                     isLogged = true;
+                    loginResponse = response;
                     assignRoleValue(response.role);
 
                     return response;
@@ -135,6 +141,7 @@ angular.module('frontendStableApp')
                     authToken = null;
                     isLogged = false;
                     userRole = 0;
+                    loginResponse = null;
 
                     return response;
                 }, function (error) {
@@ -149,6 +156,7 @@ angular.module('frontendStableApp')
             return ResourcesGeneratorService.getResource(authToken, 'info').get().$promise
                 .then(function (response) {
                     isLogged = true;
+                    loginResponse = response;
                     assignRoleValue(response.role);
 
                     return response;

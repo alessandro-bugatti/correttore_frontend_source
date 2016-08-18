@@ -8,8 +8,10 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('SidenavCtrl', function ($scope, $mdMedia, $mdDialog, $location, Config, $rootScope) {
+    .controller('SidenavCtrl', function ($scope, $mdMedia, $mdDialog, $mdSidenav, $location, Config, $rootScope, AuthService) {
         $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+
+        $scope.authService = AuthService;
 
         $scope.closed = false;
         $rootScope.$on('sidenav-close', function () {
@@ -26,6 +28,25 @@ angular.module('frontendStableApp')
 
         $scope.menuEntries = [
             {
+                title: 'Docenti',
+                description: 'Gestisci i docenti',
+                icon: 'graduation-cap',
+                allowed: 'admin',
+                link: '/teachers'
+            },
+            {
+                title: 'Disconnetti',
+                description: 'Esegui il logout',
+                icon: 'sign-out',
+                allowed: '*',
+                callback: function (entry, event) {
+                    AuthService.logout()
+                        .then(function () {
+                            $location.path('/login');
+                        });
+                }
+            },
+            {
                 title: 'Informazioni',
                 description: 'Informazioni sul correttore',
                 icon: 'info-circle',
@@ -41,6 +62,8 @@ angular.module('frontendStableApp')
                 $scope.goTo(entry.link);
             else if (typeof entry.callback === 'function')
                 entry.callback(entry, event);
+
+            $mdSidenav('left').close();
         };
 
         $scope.display = function (entry) {

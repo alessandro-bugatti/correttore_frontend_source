@@ -8,8 +8,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -27,12 +27,12 @@
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
                     md-is-locked-open="$mdMedia('gt-md') && !closed">
             <md-toolbar class="md-theme-indigo">
-                <h1 class="md-toolbar-tools">Sidenav Left</h1>
+                <h1 class="md-toolbar-tools">Correttore</h1>
             </md-toolbar>
             <md-content layout-fill>
                 <md-list>
                     <md-list-item class="md-2-line" ng-repeat="entry in menuEntries" ng-if="display(entry)"
-                                  ng-style="{'border-bottom': $last ? '' : '1px solid #e1e1e1'}"
+                                  ng-style="{'border-top': $first ? '1px solid #e1e1e1' : '', 'border-bottom': $last ? '' : '1px solid #e1e1e1'}"
                                   ng-click="handleClick(entry, $event)">
                         <md-icon md-font-icon="fa-{{entry.icon}}" class="fa"
                                  style="font-size: 38px;"></md-icon>
@@ -46,18 +46,18 @@
             </md-content>
         </md-sidenav>
 
-        <md-content flex>
-            <md-toolbar class="md-theme-indigo" ng-controller="ToolbarCtrl" ng-hide="hide">
+        <md-content flex style="position: relative;">
+            <md-toolbar class="md-theme-indigo" style="position: initial;" ng-controller="ToolbarCtrl" ng-hide="hide">
                 <h1 class="md-toolbar-tools">
                     <md-button hide-gt-md class="md-icon-button" style="font-size: 21px; margin-right: 2px;"
                                ng-click="openSidenav()"
                                aria-label="Open Sidenav">
                         <md-icon md-font-icon="fa-bars" class="fa"></md-icon>
                     </md-button>
-                    Main Toolbar
                 </h1>
+                <md-progress-circular md-mode="indeterminate" class="central" ng-if="loading"></md-progress-circular>
             </md-toolbar>
-            <div ng-view="" layout-padding></div>
+            <div style="position: relative;" ng-view layout-padding></div>
         </md-content>
     </section>
 </div>
@@ -86,11 +86,13 @@
 <script src="scripts/controllers/toolbar.js"></script>
 <script src="scripts/controllers/dialog.js"></script>
 <script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/teachers.js"></script>
 <script src="scripts/services/resourcesgenerator.js"></script>
 <script src="scripts/services/auth.js"></script>
 <script src="scripts/services/teachers.js"></script>
 <script src="scripts/services/tasks.js"></script>
 <script src="scripts/services/groups.js"></script>
+<script src="scripts/filters/roleformatter.js"></script>
 <!-- endbuild -->
 </body>
 </html>

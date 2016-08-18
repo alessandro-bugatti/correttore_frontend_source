@@ -24,3 +24,14 @@ md-toolbar.ng-hide:not(.ng-hide-animate) {
         margin-top: 20px;
     }
 }
+
+.no-padding {
+    padding: 0 !important;
+}
+
+md-progress-circular.central {
+    position: absolute;
+    top: calc(50% - 25px);
+    left: calc(50% - 25px);
+    z-index: 9999 !important;
+}

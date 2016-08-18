@@ -14,6 +14,8 @@ angular.module('frontendStableApp')
         };
 
         $scope.hide = false;
+        $scope.loading = false;
+
         $rootScope.$on('toolbar-hide', function () {
             $scope.hide = true;
         });
@@ -24,5 +26,17 @@ angular.module('frontendStableApp')
 
         $rootScope.$on('toolbar-show', function () {
             $scope.hide = false;
+        });
+
+        $rootScope.$on('loading-start', function () {
+            $scope.loading = true;
+        });
+
+        $rootScope.$on('loading-stop', function () {
+            $scope.loading = false;
+        });
+
+        $rootScope.$on('loading-toggle', function () {
+            $scope.loading = !$scope.loading;
         });
     });
