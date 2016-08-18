@@ -1,2 +1,26 @@
 // bower:scss
+@import "components-font-awesome/scss/font-awesome.scss";
 // endbower
+
+md-toolbar {
+    transition-property: background-color, fill, color, margin !important;
+    -webkit-transition-property: background-color, fill, color, margin !important;
+    margin-top: 0 !important;
+}
+
+md-toolbar.ng-hide:not(.ng-hide-animate) {
+    margin-top: -100px !important;
+    display: flex !important;
+}
+
+.login-container {
+    background-color: white;
+
+    md-input-container {
+        margin: 0;
+    }
+
+    md-input-container:first-child {
+        margin-top: 20px;
+    }
+}

@@ -86,6 +86,10 @@ angular.module('frontendStableApp')
             return authToken;
         };
 
+        this.hasAuthToken = function () {
+            return authToken != undefined && authToken != null;
+        };
+
         function assignRoleValue(roleName) {
             userRole = 0;
 

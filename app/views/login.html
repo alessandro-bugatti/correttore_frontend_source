@@ -1,0 +1,31 @@
+<md-content class="md-padding" layout-xs="column" layout="row" layout-align="center center">
+    <div flex-xs flex-gt-xs="50" flex-gt-md="30" layout="column">
+        <md-card style="margin-top: 25%;">
+            <img ng-src="images/login-card.png" class="md-card-image" alt="Login">
+            <md-content layout-padding class="login-container" style="position: relative;">
+                <div ng-show="loading" layout="column" layout-align="center center" style="margin-top: 10px;">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                    <h2>{{loadingMessage}}</h2>
+                </div>
+                <div ng-show="loginForm && !loading">
+                    <h4 style="margin: 0;" ng-if="errorMessage">{{errorMessage}}</h4>
+                    <form name="LoginForm">
+                        <div layout="column">
+                            <md-input-container>
+                                <label>Username</label>
+                                <input ng-model="user.username" ng-disabled="loading" required>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Password</label>
+                                <input ng-model="user.password" ng-disabled="loading" type="password" required>
+                            </md-input-container>
+                        </div>
+                    </form>
+                </div>
+            </md-content>
+            <md-card-actions layout="row" layout-align="end center" ng-show="loginForm && !loading">
+                <md-button ng-disabled="LoginForm.$invalid" ng-click="login()">Login</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</md-content>
