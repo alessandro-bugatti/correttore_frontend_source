@@ -52,7 +52,8 @@
         </div>
     </md-content>
     <md-content layout="row" layout-align="end center" style="background-color: white;">
-        <md-button class="md-primary md-raised" ng-disabled="teacherForm.$invalid || user.password != user.password2"
+        <md-button class="md-primary md-raised"
+                   ng-disabled="teacherForm.$invalid || user.password != user.password2 || (teacherId == 'new' && user.password.length == 0)"
                    ng-click="save()">Salva
         </md-button>
     </md-content>
