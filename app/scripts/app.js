@@ -33,6 +33,10 @@ angular
                 templateUrl: 'views/teachers.html',
                 controller: 'TeachersCtrl'
             })
+            .when('/groups/:groupId?', {
+                templateUrl: 'views/groups.html',
+                controller: 'GroupsCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });

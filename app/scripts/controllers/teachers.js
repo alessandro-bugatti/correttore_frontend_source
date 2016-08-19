@@ -48,16 +48,16 @@ angular.module('frontendStableApp')
                 password2: ''
             };
 
-            if ($scope.teacherId != 'new') {
+            if ($scope.teacherId == 'new') {
+                $scope.loading = false;
+                $rootScope.$emit('loading-stop');
+            } else {
                 TeachersService.getOneTeacher($scope.teacherId)
                     .then(function (response) {
                         $scope.loading = false;
                         $rootScope.$emit('loading-stop');
                         $scope.user = response;
                     });
-            } else {
-                $scope.loading = false;
-                $rootScope.$emit('loading-stop');
             }
 
             $scope.save = function () {

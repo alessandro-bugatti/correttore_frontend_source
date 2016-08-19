@@ -35,6 +35,13 @@ angular.module('frontendStableApp')
                 link: '/teachers'
             },
             {
+                title: 'Gruppi',
+                description: 'Gestisci i gruppi',
+                icon: 'users',
+                allowed: ['admin', 'teacher'],
+                link: '/groups'
+            },
+            {
                 title: 'Disconnetti',
                 description: 'Esegui il logout',
                 icon: 'sign-out',
