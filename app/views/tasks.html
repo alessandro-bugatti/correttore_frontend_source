@@ -19,23 +19,25 @@
 </md-card>
 
 <md-card layout-padding ng-if="taskId && !loading">
-    <h2 class="cardHeader">{{taskId == 'new' ? 'Aggiungi' : 'Modifica'}} Problema</h2>
+    <h2 class="cardHeader">{{taskId == 'new' ? 'Aggiungi' : 'Dettagli'}} Problema</h2>
     <md-content style="background-color: white;">
         <div>
             <form name="taskForm">
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Titolo</label>
-                        <input ng-model="task.title" required>
+                        <input ng-model="task.title" required ng-disabled="taskId != 'new'">
+                        <!-- TODO: togliere l-ng-disabled alla chiusura dell'issue #1 -->
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Sottotitolo</label>
-                        <input ng-model="task.short_title" required>
+                        <input ng-model="task.short_title" required ng-disabled="taskId != 'new'">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
-                        <md-checkbox ng-model="task.is_public" aria-label="Is Public" style="margin: auto;">
+                        <md-checkbox ng-model="task.is_public" aria-label="Is Public" style="margin: auto;"
+                                     ng-disabled="taskId != 'new'">
                             Problema Pubblico
                         </md-checkbox>
                     </md-input-container>
@@ -44,7 +46,7 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Livello</label>
-                        <md-select ng-model="task.level" required>
+                        <md-select ng-model="task.level" required ng-disabled="taskId != 'new'">
                             <md-option ng-repeat="num in [1, 2, 3, 4, 5, 6, 7, 8]" ng-value="num">
                                 {{num}}
                             </md-option>
@@ -53,7 +55,7 @@
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Categoria</label>
-                        <md-select ng-model="task.category_id" required>
+                        <md-select ng-model="task.category_id" required ng-disabled="taskId != 'new'">
                             <md-option ng-repeat="categoria in categorie" ng-value="categoria.id">
                                 {{categoria.name}}
                             </md-option>
@@ -64,13 +66,14 @@
                         <!-- TODO: mostrare messaggio di errore per valore non valido -->
                         <label>Numero di Test Case</label>
                         <input type="number" step="1" ng-model="task.test_cases" min="1"
-                               max="50" required>
+                               max="50" required ng-disabled="taskId != 'new'">
                     </md-input-container>
                 </div>
 
                 <div layout-gt-sm="row" style="justify-content: space-around;">
                     <div ngf-select ngf-drop ngf-change="setFile('description', $files)" class="drop-box"
-                         ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}">
+                         ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}"
+                         ng-disabled="taskId != 'new'">
                         Descrizione
                         <div class="filename" ng-if="task.description">
                             {{task.description.name}} - {{task.description.size | fileSizeFormatter}}
@@ -80,7 +83,8 @@
 
                     <div ngf-select ngf-drop ngf-change="setFile('solution', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
-                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}">
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-disabled="taskId != 'new'">
                         Soluzione
                         <div class="filename" ng-if="task.solution">
                             {{task.solution.name}} - {{task.solution.size | fileSizeFormatter}}
@@ -90,12 +94,12 @@
 
                     <div ngf-select ngf-drop ngf-change="setFile('material', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
-                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}">
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-disabled="taskId != 'new'">
                         Materiale
                         <div class="filename" ng-if="task.material">
                             {{task.material.name}} - {{task.material.size | fileSizeFormatter}}
                         </div>
-                        <div class="filename"></div>
                     </div>
                     <div ngf-no-file-drop>Drag and Drop non disponibile</div>
                 </div>

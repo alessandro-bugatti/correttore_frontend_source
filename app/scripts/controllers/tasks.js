@@ -97,7 +97,7 @@ angular.module('frontendStableApp')
                     TasksService.addTask($scope.task)
                         .then(function (response) {
                             $rootScope.$emit('loading-stop');
-                            $location.path('/groups');
+                            $location.path('/tasks');
                         });
                 } else {
                     // TODO: update

@@ -35,7 +35,7 @@ angular.module('frontendStableApp')
             formData.is_public = formData.is_public ? 1 : 0;
 
             return Upload.upload({
-                url: Config.getServerPath() + 'tasks/',
+                url: Config.getServerPath() + 'tasks',
                 headers: headersObj,
                 data: formData
             })
