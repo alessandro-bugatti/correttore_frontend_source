@@ -13,11 +13,14 @@
                         <div layout="column">
                             <md-input-container>
                                 <label>Username</label>
-                                <input ng-model="user.username" ng-disabled="loading" required>
+                                <input ng-model="user.username" ng-disabled="loading"
+                                       ng-keypress="!LoginForm.$invalid && $event.keyCode == 13 && login()" required>
                             </md-input-container>
                             <md-input-container>
                                 <label>Password</label>
-                                <input ng-model="user.password" ng-disabled="loading" type="password" required>
+                                <input ng-model="user.password" ng-disabled="loading"
+                                       ng-keypress="!LoginForm.$invalid && $event.keyCode == 13 && login()"
+                                       type="password" required>
                             </md-input-container>
                         </div>
                     </form>
