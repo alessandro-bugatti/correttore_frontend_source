@@ -8,7 +8,7 @@
  * Service of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .service('TasksService', function (ResourcesGeneratorService, AuthService, $q) {
+    .service('TasksService', function (ResourcesGeneratorService, Upload, Config, AuthService, $q) {
         this.getList = function () {
             if (!AuthService.isLogged || !AuthService.atLeast('teacher'))
                 return $q.reject("User not logged in"); // FIXME: update error string
@@ -29,8 +29,18 @@ angular.module('frontendStableApp')
             if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
                 return $q.reject("User not logged in");
 
-            return ResourcesGeneratorService.getResource(AuthService.getAuthToken(), 'tasks').create(formData).$promise
-                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
+
+            formData.is_public = formData.is_public ? 1 : 0;
+
+            return Upload.upload({
+                url: Config.getServerPath() + 'tasks/',
+                headers: headersObj,
+                data: formData
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
         };
 
         this.deleteTask = function (taskId) {

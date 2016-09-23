@@ -17,7 +17,8 @@ angular
         'ngResource',
         'ngRoute',
         'ngSanitize',
-        'ngMaterial'
+        'ngMaterial',
+        'ngFileUpload'
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -36,6 +37,10 @@ angular
             .when('/groups/:groupId?', {
                 templateUrl: 'views/groups.html',
                 controller: 'GroupsCtrl'
+            })
+            .when('/tasks/:taskId?', {
+                templateUrl: 'views/tasks.html',
+                controller: 'TasksCtrl'
             })
             .otherwise({
                 redirectTo: '/'

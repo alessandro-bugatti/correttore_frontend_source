@@ -42,6 +42,13 @@ angular.module('frontendStableApp')
                 link: '/groups'
             },
             {
+                title: 'Problemi',
+                description: 'Gestisci i problemi',
+                icon: 'tasks', // FIXME: Fa abbastanza schifo
+                allowed: ['admin', 'teacher'],
+                link: '/tasks'
+            },
+            {
                 title: 'Disconnetti',
                 description: 'Esegui il logout',
                 icon: 'sign-out',
