@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('LoginCtrl', function (AuthService, $scope, $location, $rootScope, $mdSidenav) {
+    .controller('LoginCtrl', function (AuthService, $scope, $location, $rootScope, $mdSidenav, $mdTheming) {
         if (AuthService.isLogged()) {
             loginCompletato();
             return;
@@ -26,6 +26,10 @@ angular.module('frontendStableApp')
         function loginCompletato() {
             $rootScope.$emit('sidenav-open');
             $rootScope.$emit('toolbar-show');
+
+            if ($mdTheming.THEMES.hasOwnProperty(AuthService.getLoginResponse().role)) // Controllo che il tema sia valido
+                $rootScope.theme = AuthService.getLoginResponse().role;
+
             if ($location.search().redirect) {
                 $location.path($location.search().redirect);
                 $location.search({});
@@ -37,6 +41,9 @@ angular.module('frontendStableApp')
         $scope.loginForm = true;
         $scope.loadingMessage = 'Accesso in corso...';
         $scope.errorMessage = null;
+
+        if (!$scope.loading)
+            $rootScope.theme = 'guest'; // assumo che 'guest' ci sia sempre
 
         if (AuthService.hasAuthToken()) {
             $scope.loadingMessage = 'Ripresa della sessione...';

@@ -46,6 +46,32 @@ angular
                 redirectTo: '/'
             });
     })
+    .config(function ($mdThemingProvider) {
+        $mdThemingProvider.theme('guest')
+            .primaryPalette('light-green')
+            .accentPalette('amber')
+            .warnPalette('pink')
+            .dark();
+
+        $mdThemingProvider.theme('student')
+            .primaryPalette('brown')
+            .accentPalette('teal')
+            .warnPalette('deep-orange')
+            .dark();
+
+        $mdThemingProvider.theme('teacher')
+            .primaryPalette('blue')
+            .accentPalette('deep-orange')
+            .warnPalette('amber');
+
+        $mdThemingProvider.theme('admin')
+            .primaryPalette('green')
+            .accentPalette('indigo')
+            .warnPalette('amber');
+
+        //$mdThemingProvider.setDefaultTheme('guest');
+        $mdThemingProvider.alwaysWatchTheme(true);
+    })
     .config(function (ConfigProvider) {
         ConfigProvider.serverVersion = 'v1';
         ConfigProvider.serverHost = 'https://auth-silex-test-alessandro-bugatti.c9users.io';

@@ -8,8 +8,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -22,26 +22,28 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div layout="column" style="height: 100%;" ng-app="frontendStableApp" ng-cloak>
+<div layout="column" style="height: 100%;" ng-app="frontendStableApp" md-theme="{{theme}}" ng-cloak>
     <section layout="row" flex="" ng-controller="SidenavCtrl">
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
                     md-is-locked-open="$mdMedia('gt-md') && !closed">
             <md-toolbar class="md-theme-indigo">
-                <h1 class="md-toolbar-tools">Loggato come {{authService.getLoginResponse().role | roleFormatter}}</h1>
+                <h1 class="md-toolbar-tools"><span class="sidenav-small-title">Loggato come</span>&nbsp;{{authService.getLoginResponse().username}}
+                </h1>
             </md-toolbar>
-            <md-content layout-fill>
+            <md-content class="sidenav-content" layout-fill>
                 <md-list>
-                    <md-list-item class="md-2-line" ng-repeat="entry in menuEntries" ng-if="display(entry)"
-                                  ng-style="{'border-top': $first ? '1px solid #e1e1e1' : '', 'border-bottom': $last ? '' : '1px solid #e1e1e1'}"
-                                  ng-click="handleClick(entry, $event)">
-                        <md-icon md-font-icon="fa-{{entry.icon}}" class="fa"
-                                 style="font-size: 38px;"></md-icon>
-                        <div class="md-list-item-text">
-                            <h3>{{entry.title}}</h3>
-                            <p>{{entry.description}}</p>
-                        </div>
-                    </md-list-item>
-                    <md-divider></md-divider>
+                    <span ng-repeat="entry in menuEntries" ng-if="display(entry)">
+                        <md-list-item class="md-2-line"
+                                      ng-click="handleClick(entry, $event)">
+                            <md-icon md-font-icon="fa-{{entry.icon}}" class="fa"
+                                     style="font-size: 38px;"></md-icon>
+                            <div class="md-list-item-text">
+                                <h3>{{entry.title}}</h3>
+                                <p>{{entry.description}}</p>
+                            </div>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </span>
                 </md-list>
             </md-content>
         </md-sidenav>

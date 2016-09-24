@@ -20,7 +20,7 @@
 
 <md-card layout-padding ng-if="taskId && !loading">
     <h2 class="cardHeader">{{taskId == 'new' ? 'Aggiungi' : 'Dettagli'}} Problema</h2>
-    <md-content style="background-color: white;">
+    <md-content style="background-color: inherit;">
         <div>
             <form name="taskForm">
                 <div layout-gt-sm="row">
@@ -102,7 +102,7 @@
             </form>
         </div>
     </md-content>
-    <md-content layout="row" layout-align="end center" style="background-color: white;">
+    <md-content layout="row" layout-align="end center" style="background-color: inherit;">
         <md-button class="md-primary md-raised"
                    ng-disabled="taskId == 'new' && (taskForm.$invalid || !task.description || !task.solution || !task.material)"
                    ng-click="save()">Salva
