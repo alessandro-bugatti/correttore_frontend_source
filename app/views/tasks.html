@@ -7,7 +7,7 @@
                      style="font-size: 38px;"></md-icon>
             <div class="md-list-item-text">
                 <h3>{{task.title}}</h3>
-                <p>TODO: numero di studenti</p>
+                <!-- <p>Linea aggiuntiva non utilizzata</p> -->
             </div>
             <md-button ng-if="isTeacherOnly" class="md-secondary md-icon-button md-raised"
                        ng-click="deleteTask(task.id, $index, $event)" aria-label="call">
@@ -26,18 +26,17 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Titolo</label>
-                        <input ng-model="task.title" required ng-disabled="taskId != 'new'">
-                        <!-- TODO: togliere l-ng-disabled alla chiusura dell'issue #1 -->
+                        <input ng-model="task.title" required>
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Sottotitolo</label>
-                        <input ng-model="task.short_title" required ng-disabled="taskId != 'new'">
+                        <input ng-model="task.short_title" required>
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
-                        <md-checkbox ng-model="task.is_public" aria-label="Is Public" style="margin: auto;"
-                                     ng-disabled="taskId != 'new'">
+                        <md-checkbox ng-model="task.is_public" ng-true-value="'1'" ng-false-value="'0'"
+                                     aria-label="Is Public" style="margin: auto;">
                             Problema Pubblico
                         </md-checkbox>
                     </md-input-container>
@@ -46,7 +45,7 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Livello</label>
-                        <md-select ng-model="task.level" required ng-disabled="taskId != 'new'">
+                        <md-select ng-model="task.level" required>
                             <md-option ng-repeat="num in [1, 2, 3, 4, 5, 6, 7, 8]" ng-value="num">
                                 {{num}}
                             </md-option>
@@ -55,7 +54,7 @@
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Categoria</label>
-                        <md-select ng-model="task.category_id" required ng-disabled="taskId != 'new'">
+                        <md-select ng-model="task.category_id" required>
                             <md-option ng-repeat="categoria in categorie" ng-value="categoria.id">
                                 {{categoria.name}}
                             </md-option>
@@ -66,14 +65,13 @@
                         <!-- TODO: mostrare messaggio di errore per valore non valido -->
                         <label>Numero di Test Case</label>
                         <input type="number" step="1" ng-model="task.test_cases" min="1"
-                               max="50" required ng-disabled="taskId != 'new'">
+                               max="50" required>
                     </md-input-container>
                 </div>
 
                 <div layout-gt-sm="row" style="justify-content: space-around;">
                     <div ngf-select ngf-drop ngf-change="setFile('description', $files)" class="drop-box"
-                         ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}"
-                         ng-disabled="taskId != 'new'">
+                         ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}">
                         Descrizione
                         <div class="filename" ng-if="task.description">
                             {{task.description.name}} - {{task.description.size | fileSizeFormatter}}
@@ -83,8 +81,7 @@
 
                     <div ngf-select ngf-drop ngf-change="setFile('solution', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
-                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
-                         ng-disabled="taskId != 'new'">
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}">
                         Soluzione
                         <div class="filename" ng-if="task.solution">
                             {{task.solution.name}} - {{task.solution.size | fileSizeFormatter}}
@@ -94,8 +91,7 @@
 
                     <div ngf-select ngf-drop ngf-change="setFile('material', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
-                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
-                         ng-disabled="taskId != 'new'">
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}">
                         Materiale
                         <div class="filename" ng-if="task.material">
                             {{task.material.name}} - {{task.material.size | fileSizeFormatter}}
@@ -106,10 +102,9 @@
             </form>
         </div>
     </md-content>
-    <md-content ng-if="taskId == 'new'" layout="row" layout-align="end center" style="background-color: white;">
-        <!-- FIXME per permettere la modifica -->
+    <md-content layout="row" layout-align="end center" style="background-color: white;">
         <md-button class="md-primary md-raised"
-                   ng-disabled="taskForm.$invalid || !task.description || !task.solution || !task.material"
+                   ng-disabled="taskId == 'new' && (taskForm.$invalid || !task.description || !task.solution || !task.material)"
                    ng-click="save()">Salva
         </md-button>
     </md-content>

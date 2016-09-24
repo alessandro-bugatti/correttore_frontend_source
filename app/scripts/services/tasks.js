@@ -25,14 +25,28 @@ angular.module('frontendStableApp')
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
 
-        this.addTask = function (formData) { // TODO: test
+        this.updateTask = function (taskId, formData) {
             if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
                 return $q.reject("User not logged in");
 
             var headersObj = {};
             headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
 
-            formData.is_public = formData.is_public ? 1 : 0;
+            return Upload.upload({
+                url: Config.getServerPath() + 'tasks/' + taskId,
+                headers: headersObj,
+                data: formData
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
+        };
+
+        this.addTask = function (formData) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
 
             return Upload.upload({
                 url: Config.getServerPath() + 'tasks',

@@ -18,9 +18,9 @@ angular.module('frontendStableApp')
         $scope.mdMedia = $mdMedia;
 
         $scope.categorie = [
-            {id: 0, name: 'I/O'},
-            {id: 1, name: 'Ordinamento'},
-            {id: 2, name: 'Grafi'}
+            {id: 1, name: 'Sequenza'},
+            {id: 2, name: 'Selezione'},
+            {id: 3, name: 'Input/Output'}
         ];
 
         if (!AuthService.atLeast('teacher')) {
@@ -60,10 +60,10 @@ angular.module('frontendStableApp')
             $scope.task = {
                 title: '',
                 short_title: '',
-                is_public: false,
+                is_public: '0',
                 level: 1,
                 test_cases: 1,
-                category_id: 0, //FIXME: link per scaricare le categorie o lista
+                category_id: 0, //FIXME: link per scaricare le categorie o lista (issue #6 correttoreAPI)
                 description: null,
                 solution: null,
                 material: null
@@ -79,13 +79,12 @@ angular.module('frontendStableApp')
             } else {
                 TasksService.getOneTask($scope.taskId)
                     .then(function (response) {
-                        $scope.task = response;
+                        $scope.task = JSON.parse(JSON.stringify(response)); // deep copy per evitare riferimenti circolari all'update
 
                         $scope.loading = false;
                         $rootScope.$emit('loading-stop');
 
                         $scope.task.test_cases = parseInt($scope.task.test_cases); // Fix per input[type=number]
-                        $scope.task.is_public = !!$scope.task.is_public; // Fix per checkbox
                     }, function (error) {
                         $location.path('/tasks');
                     });
@@ -100,7 +99,12 @@ angular.module('frontendStableApp')
                             $location.path('/tasks');
                         });
                 } else {
-                    // TODO: update
+                    $rootScope.$emit('loading-start');
+                    TasksService.updateTask($scope.taskId, $scope.task)
+                        .then(function (response) {
+                            $rootScope.$emit('loading-stop');
+                            //$location.path('/tasks'); TODO: facciamo il redirect?
+                        });
                 }
             }
         } else {
