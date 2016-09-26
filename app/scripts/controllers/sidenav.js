@@ -113,7 +113,8 @@ angular.module('frontendStableApp')
                 fullscreen: useFullScreen,
                 locals: {
                     items: {
-                        clientVersion: Config.getVersion()
+                        clientVersion: Config.getVersion(),
+                        rootScope: $rootScope
                     }
                 }
             });

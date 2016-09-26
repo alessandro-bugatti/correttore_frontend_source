@@ -66,6 +66,11 @@ div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo 
         font-size: 0.74em;
         font-style: italic;
     }
+
+    &[disabled="disabled"] {
+        background: #fbfbfb;
+        cursor: no-drop;
+    }
 }
 
 .sidenav-small-title {
