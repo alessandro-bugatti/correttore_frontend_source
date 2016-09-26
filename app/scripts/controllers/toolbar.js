@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('ToolbarCtrl', function ($scope, $mdSidenav, $rootScope) {
+    .controller('ToolbarCtrl', function ($scope, $mdSidenav, $rootScope, $window) {
         $scope.openSidenav = function () {
             $mdSidenav('left').open();
         };
@@ -38,5 +38,16 @@ angular.module('frontendStableApp')
 
         $rootScope.$on('loading-toggle', function () {
             $scope.loading = !$scope.loading;
+        });
+
+        $scope.showBack = false;
+
+        $scope.goBack = function () {
+            $scope.showBack = false;
+            $window.history.back();
+        };
+
+        $rootScope.$on('has-back', function () {
+            $scope.showBack = true;
         });
     });

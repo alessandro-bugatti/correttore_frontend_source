@@ -72,6 +72,7 @@
                 <div layout-gt-sm="row" style="justify-content: space-around;">
                     <div ngf-select ngf-drop ngf-change="setFile('description', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
                          ng-disabled="!isTeacherOnly">
                         Descrizione
                         <div class="filename" ng-if="task.description">
@@ -83,6 +84,7 @@
                     <div ngf-select ngf-drop ngf-change="setFile('solution', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
                          ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
                          ng-disabled="!isTeacherOnly">
                         Soluzione
                         <div class="filename" ng-if="task.solution">
@@ -94,6 +96,7 @@
                     <div ngf-select ngf-drop ngf-change="setFile('material', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'"
                          ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
                          ng-disabled="!isTeacherOnly">
                         Materiale
                         <div class="filename" ng-if="task.material">

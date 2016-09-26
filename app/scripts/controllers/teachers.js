@@ -87,6 +87,7 @@ angular.module('frontendStableApp')
         }
 
         $scope.openTeacher = function (teacherId) {
+            $rootScope.$emit('has-back'); // Mostra tasto indietro nella toolbar
             $location.path('/teachers/' + teacherId);
         }
     });

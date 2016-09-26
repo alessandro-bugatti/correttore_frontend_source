@@ -27,7 +27,8 @@
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
                     md-is-locked-open="$mdMedia('gt-md') && !closed">
             <md-toolbar class="md-theme-indigo">
-                <h1 class="md-toolbar-tools"><span class="sidenav-small-title">Loggato come</span>&nbsp;{{authService.getLoginResponse().username}}
+                <h1 class="md-toolbar-tools" ng-if="authService.getLoginResponse().username"><span
+                    class="sidenav-small-title">Loggato come</span>&nbsp;{{authService.getLoginResponse().username}}
                 </h1>
             </md-toolbar>
             <md-content class="sidenav-content" layout-fill>
@@ -55,6 +56,12 @@
                                ng-click="openSidenav()"
                                aria-label="Open Sidenav">
                         <md-icon md-font-icon="fa-bars" class="fa"></md-icon>
+                    </md-button>
+
+                    <md-button ng-if="showBack" class="md-icon-button" style="font-size: 21px; margin-right: 2px;"
+                               ng-click="goBack()"
+                               aria-label="Go Back">
+                        <md-icon md-font-icon="fa-chevron-left" class="fa"></md-icon>
                     </md-button>
                 </h1>
                 <md-progress-circular md-mode="indeterminate" class="central" ng-if="loading"></md-progress-circular>
@@ -92,11 +99,13 @@
 <script src="scripts/controllers/teachers.js"></script>
 <script src="scripts/controllers/groups.js"></script>
 <script src="scripts/controllers/tasks.js"></script>
+<script src="scripts/controllers/problems.js"></script>
 <script src="scripts/services/resourcesgenerator.js"></script>
 <script src="scripts/services/auth.js"></script>
 <script src="scripts/services/teachers.js"></script>
 <script src="scripts/services/tasks.js"></script>
 <script src="scripts/services/groups.js"></script>
+<script src="scripts/services/problems.js"></script>
 <script src="scripts/filters/roleformatter.js"></script>
 <script src="scripts/filters/filesizeformatter.js"></script>
 <!-- endbuild -->

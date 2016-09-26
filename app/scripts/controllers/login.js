@@ -73,4 +73,13 @@ angular.module('frontendStableApp')
                     $scope.errorMessage = 'Credenziali non valide';
                 })
         };
+
+        $scope.guestLogin = function () {
+            $rootScope.$emit('sidenav-open');
+            $rootScope.$emit('toolbar-show');
+
+            AuthService.guestLogin();
+            $location.path('/problems');
+            $location.search({});
+        };
     });

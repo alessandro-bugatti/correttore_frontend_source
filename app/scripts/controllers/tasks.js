@@ -8,12 +8,16 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TasksCtrl', function (AuthService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia) {
+    .controller('TasksCtrl', function (AuthService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
             return;
         }
+
+        if (!$rootScope.theme)
+            $rootScope.theme = $mdTheming.defaultTheme();
+        $scope.currentThemeObj = $mdTheming.THEMES[$rootScope.theme];
 
         $scope.mdMedia = $mdMedia;
 
@@ -118,6 +122,7 @@ angular.module('frontendStableApp')
         }
 
         $scope.openTask = function (taskId) {
+            $rootScope.$emit('has-back'); // Mostra tasto indietro nella toolbar
             $location.path('/tasks/' + taskId);
         }
     });

@@ -49,15 +49,25 @@ angular.module('frontendStableApp')
                 link: '/tasks'
             },
             {
+                title: 'Esercizi',
+                description: 'Sottometti una soluzione',
+                icon: 'code',
+                allowed: '*',
+                link: '/problems'
+            },
+            {
                 title: 'Disconnetti',
                 description: 'Esegui il logout',
                 icon: 'sign-out',
                 allowed: '*',
                 callback: function (entry, event) {
-                    AuthService.logout()
-                        .then(function () {
-                            $location.path('/login');
-                        });
+                    if (AuthService.isLogged())
+                        AuthService.logout()
+                            .then(function () {
+                                $location.path('/login');
+                            });
+                    else
+                        $location.path('/login');
                 }
             },
             {

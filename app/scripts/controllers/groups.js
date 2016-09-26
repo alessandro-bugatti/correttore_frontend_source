@@ -98,6 +98,7 @@ angular.module('frontendStableApp')
         }
 
         $scope.openGroup = function (groupId) {
+            $rootScope.$emit('has-back'); // Mostra tasto indietro nella toolbar
             $location.path('/groups/' + groupId);
         }
     });

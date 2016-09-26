@@ -38,6 +38,14 @@ md-progress-circular.central {
 
 h2.cardHeader {
     margin: 0;
+
+    &.problem {
+        display: inline-block;
+    }
+
+    .monospace {
+        font-family: Consolas, Menlo, Monaco, monospace;
+    }
 }
 
 div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo uso per admin/professori */
@@ -48,11 +56,11 @@ div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo 
     padding: 50px 10px;
     margin-left: 10px;
 
-    -webkit-transition: background-color 100ms linear;
-    -moz-transition: background-color 100ms linear;
-    -o-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+    -webkit-transition: background-color 100ms ease-in-out;
+    -moz-transition: background-color 100ms ease-in-out;
+    -o-transition: background-color 100ms ease-in-out;
+    -ms-transition: background-color 100ms ease-in-out;
+    transition: background-color 100ms ease-in-out;
 
     &:first-child {
         margin-left: 0;
@@ -60,6 +68,10 @@ div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo 
 
     &.dragover {
         background-color: #fbfbfb;
+
+        &.dark {
+            background: #3a3a3a;
+        }
     }
 
     .filename {
@@ -70,6 +82,16 @@ div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo 
     &[disabled="disabled"] {
         background: #fbfbfb;
         cursor: no-drop;
+    }
+
+    &.with-margin {
+        width: inherit;
+        margin: 6px 8px;
+    }
+
+    &.dark {
+        background: #303030;
+        border-color: #656565;
     }
 }
 

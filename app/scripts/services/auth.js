@@ -131,6 +131,12 @@ angular.module('frontendStableApp')
                 });
         };
 
+        this.guestLogin = function () {
+            loginResponse = {
+                username: 'ospite'
+            };
+        };
+
         this.logout = function () {
             if (!authToken || !isLogged)
                 return $q.reject('null authToken');

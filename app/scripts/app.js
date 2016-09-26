@@ -42,6 +42,10 @@ angular
                 templateUrl: 'views/tasks.html',
                 controller: 'TasksCtrl'
             })
+            .when('/problems/:problemId?', {
+                templateUrl: 'views/problems.html',
+                controller: 'ProblemsCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -49,14 +53,14 @@ angular
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('guest')
             .primaryPalette('light-green')
-            .accentPalette('amber')
+            .accentPalette('deep-orange')
             .warnPalette('pink')
             .dark();
 
         $mdThemingProvider.theme('student')
-            .primaryPalette('brown')
-            .accentPalette('teal')
-            .warnPalette('deep-orange')
+            .primaryPalette('amber')
+            .accentPalette('cyan')
+            .warnPalette('pink')
             .dark();
 
         $mdThemingProvider.theme('teacher')
@@ -69,7 +73,7 @@ angular
             .accentPalette('indigo')
             .warnPalette('amber');
 
-        //$mdThemingProvider.setDefaultTheme('guest');
+        $mdThemingProvider.setDefaultTheme('guest');
         $mdThemingProvider.alwaysWatchTheme(true);
     })
     .config(function (ConfigProvider) {
