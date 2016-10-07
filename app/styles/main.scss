@@ -48,7 +48,7 @@ h2.cardHeader {
     }
 }
 
-div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo uso per admin/professori */
+div.drop-box {
     background: #f5f5f5;
     border: 5px dashed #ccc;
     width: 27%;
@@ -92,6 +92,14 @@ div.drop-box { /* TODO: Sarebbe da adattare per il tema dark, ma per ora non lo 
     &.dark {
         background: #303030;
         border-color: #656565;
+    }
+
+    &.task-submission {
+        width: initial;
+
+        @media (min-width: 960px) {
+            width: 100%;
+        }
     }
 }
 

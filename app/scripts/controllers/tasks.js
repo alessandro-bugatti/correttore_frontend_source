@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TasksCtrl', function (AuthService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming) {
+    .controller('TasksCtrl', function (AuthService, TasksService, CategoriesService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -21,11 +21,10 @@ angular.module('frontendStableApp')
 
         $scope.mdMedia = $mdMedia;
 
-        $scope.categorie = [
-            {id: 1, name: 'Sequenza'},
-            {id: 2, name: 'Selezione'},
-            {id: 3, name: 'Input/Output'}
-        ];
+        $scope.categorie = [];
+        CategoriesService.getList().then(function (response) {
+            $scope.categorie = response;
+        });
 
         if (!AuthService.atLeast('teacher')) {
             $location.path('/');

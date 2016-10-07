@@ -56,7 +56,7 @@
                         <label>Categoria</label>
                         <md-select ng-model="task.category_id" required ng-disabled="!isTeacherOnly">
                             <md-option ng-repeat="categoria in categorie" ng-value="categoria.id">
-                                {{categoria.name}}
+                                {{categoria.description}}
                             </md-option>
                         </md-select>
                     </md-input-container>
