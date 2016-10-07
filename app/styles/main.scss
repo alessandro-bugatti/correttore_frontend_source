@@ -111,3 +111,27 @@ div.drop-box {
     height: initial;
     min-height: initial;
 }
+
+md-input-container.select-plus-button {
+    display: flex;
+
+    > md-progress-circular {
+        transform: scale(.45, .45);
+        margin-top: -5px;
+        display: inline-block;
+        order: -2;
+    }
+
+    > md-select {
+        display: inline-block;
+        flex-grow: 1;
+        order: -1;
+    }
+
+    > md-button {
+        display: inline-block;
+        margin: 0;
+        width: 36px;
+        padding: 0;
+    }
+}

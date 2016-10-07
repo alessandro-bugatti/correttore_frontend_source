@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TasksCtrl', function (AuthService, TasksService, CategoriesService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming) {
+    .controller('TasksCtrl', function (AuthService, TasksService, CategoriesService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -22,9 +22,7 @@ angular.module('frontendStableApp')
         $scope.mdMedia = $mdMedia;
 
         $scope.categorie = [];
-        CategoriesService.getList().then(function (response) {
-            $scope.categorie = response;
-        });
+        $scope.loadingCategories = true;
 
         if (!AuthService.atLeast('teacher')) {
             $location.path('/');
@@ -66,10 +64,43 @@ angular.module('frontendStableApp')
                 is_public: '0',
                 level: 1,
                 test_cases: 1,
-                category_id: 0, //FIXME: link per scaricare le categorie o lista (issue #6 correttoreAPI)
+                category_id: 0,
                 description: null,
                 solution: null,
                 material: null
+            };
+
+            var loadCategories = function () {
+                CategoriesService.getList().then(function (response) {
+                    $scope.loadingCategories = false;
+                    $scope.categorie = response;
+                });
+            };
+
+            loadCategories();
+            $scope.newCategory = function (ev) {
+
+                var confirm = $mdDialog.prompt()
+                    .title('Nuova categoria')
+                    .textContent('Dai un nome alla nuova categoria')
+                    .placeholder('Grafi')
+                    .ariaLabel('Nuova Categoria')
+                    .targetEvent(ev)
+                    .theme($rootScope.theme)
+                    .ok('Conferma')
+                    .cancel('Annulla');
+                $mdDialog.show(confirm)
+                    .then(function (result) {
+                        $scope.loadingCategories = true;
+                        return CategoriesService.addCategory(result);
+                    })
+                    .then(function (result) {
+                        $scope.loadingCategories = false;
+                        $scope.task.category_id = result.id;
+                        $scope.categorie.push(result);
+                    }, function () {
+                        $scope.loadingCategories = false;
+                    });
             };
 
             $scope.setFile = function (fileName, file) {

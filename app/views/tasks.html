@@ -52,13 +52,18 @@
                         </md-select>
                     </md-input-container>
 
-                    <md-input-container class="md-block" flex-gt-sm>
+                    <md-input-container class="md-block select-plus-button" flex-gt-sm>
                         <label>Categoria</label>
+                        <md-progress-circular ng-if="loadingCategories" md-mode="indeterminate"></md-progress-circular>
                         <md-select ng-model="task.category_id" required ng-disabled="!isTeacherOnly">
                             <md-option ng-repeat="categoria in categorie" ng-value="categoria.id">
                                 {{categoria.description}}
                             </md-option>
                         </md-select>
+                        <md-button ng-disabled="!isTeacherOnly" ng-click="newCategory()"
+                                   class="md-icon-button md-primary" aria-label="Aggiungi Categoria">
+                            <md-icon md-font-icon="fa-plus-square" class="fa"></md-icon>
+                        </md-button>
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
