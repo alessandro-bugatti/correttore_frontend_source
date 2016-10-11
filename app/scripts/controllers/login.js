@@ -79,7 +79,10 @@ angular.module('frontendStableApp')
             $rootScope.$emit('toolbar-show');
 
             AuthService.guestLogin();
-            $location.path('/problems');
-            $location.search({});
+            if ($location.search().redirect) {
+                $location.path($location.search().redirect);
+                $location.search({});
+            } else
+                $location.path('/problems');
         };
     });
