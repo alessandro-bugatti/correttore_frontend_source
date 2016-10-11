@@ -1,0 +1,27 @@
+<md-dialog aria-label="Dettagli Sottomissione" md-theme="{{rootScope.theme}}" class="submission-popup">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Dettagli Sottomissione</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon md-font-icon="fa-close" style="font-size: 20px;" class="fa"
+                             aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2 style="margin-top: 0;">Punteggio: {{score | number: 2}}</h2>
+
+                <md-list>
+                    <md-list-item ng-repeat="line in lines">
+                        <p ng-if="line.caseId == undefined">{{line}}</p>
+                        <p ng-if="line.caseId != undefined">Runtime: {{line.runtime | number:3}}s</p>
+                        <md-checkbox class="md-secondary" ng-model="line.isCorrect" disabled></md-checkbox>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

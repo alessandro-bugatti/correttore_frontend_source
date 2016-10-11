@@ -14,6 +14,37 @@ angular.module('frontendStableApp')
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
 
+        var anonSubmission = function (problemId, sourceFile) {
+            return Upload.upload({
+                url: Config.getServerPath() + 'public/submission/' + problemId,
+                data: {submission: sourceFile}
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
+        };
+
+        var userSubmission = function (problemId, sourceFile) {
+            if (!AuthService.isLogged)
+                return $q.reject("User not logged in");
+
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
+
+            return Upload.upload({
+                url: Config.getServerPath() + 'public/submission/' + problemId,
+                headers: headersObj,
+                data: {submission: sourceFile}
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
+        };
+
+        this.submitFile = function (problemId, sourceFile) {
+            if (!AuthService.isLogged())
+                return anonSubmission(problemId, sourceFile);
+            return userSubmission(problemId, sourceFile);
+        };
+
         this.getOneProblem = function (problemId) {
             return ResourcesGeneratorService.getResource(null, 'problems/:id').get({id: problemId}).$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);

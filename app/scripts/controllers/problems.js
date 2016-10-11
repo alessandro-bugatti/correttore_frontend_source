@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('ProblemsCtrl', function (AuthService, ProblemsService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming) {
+    .controller('ProblemsCtrl', function (AuthService, ProblemsService, ProblemsParserService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog) {
         if ((!AuthService.isLogged() && AuthService.getAuthToken()) || !AuthService.getLoginResponse().username) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -26,9 +26,11 @@ angular.module('frontendStableApp')
         $scope.pdfLoading = true;
         $rootScope.$emit('loading-start');
         $scope.problemId = null;
+        $scope.loadingSubmission = false;
 
         if ($routeParams.problemId) {
             $scope.problemId = $routeParams.problemId;
+            $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
 
             $scope.problem = {
                 title: '',
@@ -36,6 +38,55 @@ angular.module('frontendStableApp')
                 level: 0,
                 pdf: null,
                 sourceFile: null
+            };
+
+            var openSubmissionDetailsDialog = function (ev, score, lines) {
+                var output = ProblemsParserService.parse(lines);
+
+                console.log(output);
+
+                var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+                $mdDialog.show({
+                    controller: 'DialogCtrl',
+                    templateUrl: 'views/submissiondetails.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        items: {
+                            rootScope: $rootScope,
+                            score: score,
+                            lines: output
+                        }
+                    }
+                });
+
+                $scope.$watch(function () {
+                    return $mdMedia('xs') || $mdMedia('sm');
+                }, function (wantsFullScreen) {
+                    $scope.customFullscreen = (wantsFullScreen === true);
+                });
+            };
+
+            $scope.submit = function (ev) {
+                var problemFile = $scope.problem.sourceFile;
+
+                $scope.problem.sourceFile = null;
+                $scope.loadingSubmission = true;
+
+                ProblemsService.submitFile($scope.problemId, problemFile)
+                    .then(function (response) {
+                        var score = parseFloat(response.data.score);
+                        var lines = response.data.lines; // TODO: parse
+
+                        $scope.loadingSubmission = false;
+
+                        openSubmissionDetailsDialog(ev, score, lines);
+                    }, function (error) { // TODO: error handling
+                        $log.warn(error);
+                        $scope.loadingSubmission = false;
+                    });
             };
 
             $scope.setFile = function (fileName, file) {

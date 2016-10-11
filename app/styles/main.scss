@@ -49,6 +49,7 @@ h2.cardHeader {
 }
 
 div.drop-box {
+    position: relative;
     background: #f5f5f5;
     border: 5px dashed #ccc;
     width: 27%;
@@ -76,6 +77,8 @@ div.drop-box {
 
     .filename {
         font-size: 0.74em;
+        height: 1.2em;
+        clear: both;
         font-style: italic;
     }
 
@@ -112,6 +115,25 @@ div.drop-box {
     min-height: initial;
 }
 
+div.inline-progress-circular {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 1.1em;
+
+    > md-progress-circular {
+        transform: scale(.35, .35);
+        margin-top: -16px;
+        display: inline-block;
+        margin-left: -10px;
+    }
+
+    > span {
+        display: inline-block;
+        order: -1;
+    }
+}
+
 md-input-container.select-plus-button {
     display: flex;
 
@@ -134,4 +156,8 @@ md-input-container.select-plus-button {
         width: 36px;
         padding: 0;
     }
+}
+
+md-dialog.submission-popup {
+    width: 600px; /* TODO: controllare se sia corretta e non dia problemi con il resize */
 }

@@ -35,11 +35,18 @@
                             <div ngf-select ngf-drop ngf-change="setFile('sourceFile', $files)"
                                  class="drop-box with-margin task-submission"
                                  ng-class="{'dark': currentThemeObj.isDark}"
-                                 ngf-drag-over-class="'dragover'">
-                                Codice Sorgente
+                                 ngf-drag-over-class="'dragover'" ng-disabled="loadingSubmission">
+
+                                <div class="inline-progress-circular">
+                                    <span>Codice Sorgente</span>
+                                    <md-progress-circular ng-show="loadingSubmission"
+                                                          class="inline-progress-circular"
+                                                          md-mode="indeterminate"></md-progress-circular>
+                                </div>
                                 <div class="filename" ng-if="problem.sourceFile">
                                     {{problem.sourceFile.name}} - {{problem.sourceFile.size | fileSizeFormatter}}
                                 </div>
+
                             </div>
                             <div ngf-no-file-drop>Drag and Drop non disponibile. Fare click per caricare</div>
                         </div>
@@ -47,6 +54,7 @@
                 </div>
                 <md-content layout="row" layout-align="end center" style="background-color: inherit;">
                     <md-button class="md-primary md-raised"
+                               ng-disabled="submitForm.$invalid || !problem.sourceFile"
                                ng-click="submit()">Sottometti
                     </md-button>
                 </md-content>
