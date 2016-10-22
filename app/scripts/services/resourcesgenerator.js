@@ -23,7 +23,9 @@ angular.module('frontendStableApp')
                     'put': {
                         method: 'PUT', headers: headersObj, params: {
                             studentId: '@studentId',
-                            groupId: '@groupId'
+                            groupId: '@groupId',
+                            testId: '@testId',
+                            taskId: '@taskId'
                         }
                     },
                     'query': {method: 'GET', isArray: true, headers: headersObj},

@@ -1,0 +1,73 @@
+<md-card layout-fill class="no-padding" ng-if="!testId && !loading">
+    <md-button class="md-primary md-raised" ng-click="$location.path('/tests/new')">Aggiungi Verifica
+    </md-button>
+    <md-list class="no-padding">
+        <md-list-item class="md-2-line" ng-repeat="verifica in tests" ng-click="openTest(verifica.id)">
+            <md-icon md-font-icon="fa-users" class="fa"
+                     style="font-size: 38px;"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{verifica.description}}</h3>
+                <p>TODO: come usiamo questa riga?</p>
+            </div>
+            <md-button class="md-secondary md-icon-button md-raised"
+                       ng-click="deleteTest(verifica.id, $index, $event)" aria-label="call">
+                <md-icon md-font-icon="fa-trash" class="fa"
+                         style="font-size: 25px;"></md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-card>
+
+<md-card layout-padding ng-if="testId && !loading">
+    <h2>{{testId == 'new' ? 'Aggiungi' : 'Modifica'}} Verifica</h2>
+    <md-content style="background-color: white;">
+        <div>
+            <form name="testForm">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Descrizione</label>
+                        <input ng-model="test.description" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <md-checkbox ng-model="test.is_on" ng-disabled="testId == 'new'" ng-true-value="'1'"
+                                     ng-false-value="'0'"
+                                     aria-label="Is Active" style="margin: auto;">
+                            Verifica Attiva
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <md-chips ng-model="ctrl.testTasks" md-autocomplete-snap
+                                  md-transform-chip="transformChip($chip)"
+                                  md-require-match="true">
+                            <md-autocomplete
+                                ng-disabled="testId == 'new'"
+                                md-selected-item="selectedItem"
+                                md-search-text="searchText"
+                                md-items="item in querySearch(searchText)"
+                                md-item-text="item.title"
+                                placeholder="Aggiungi dei problemi">
+                                <span md-highlight-text="searchText">{{item.title}}</span>
+                            </md-autocomplete>
+                            <md-chip-template>
+                                <span>
+                                    <strong>{{$chip.title}}</strong>
+                                    <!-- <em>({{$chip.category}})</em> TODO: si potrebbe aggiungere la categoria alla chiamata della lista dei tasks-->
+                                </span>
+                            </md-chip-template>
+                        </md-chips>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-content layout="row" layout-align="end center" style="background-color: white;">
+        <md-button class="md-primary md-raised"
+                   ng-disabled="testForm.$invalid"
+                   ng-click="save()">Salva
+        </md-button>
+    </md-content>
+</md-card>
+

@@ -42,6 +42,13 @@ angular.module('frontendStableApp')
                 link: '/groups'
             },
             {
+                title: 'Verifiche',
+                description: 'Visualizza le verifiche',
+                icon: 'graduation-cap',
+                allowed: ['teacher'],
+                link: '/tests'
+            },
+            {
                 title: 'Problemi',
                 description: 'Gestisci i problemi',
                 icon: 'tasks', // FIXME: Fa abbastanza schifo
