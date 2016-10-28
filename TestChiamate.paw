@@ -5,7 +5,7 @@
     <databaseInfo>
         <version>134481920</version>
         <UUID>CC657897-94C3-4EB3-949A-59BF0BD236D2</UUID>
-        <nextObjectID>212</nextObjectID>
+        <nextObjectID>215</nextObjectID>
         <metadata>
             <plist version="1.0">
                 <dict>
@@ -135,7 +135,7 @@
         <relationship name="values" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z109"></relationship>
     </object>
     <object type="LMENVIRONMENTVARIABLEVALUE" id="z111">
-        <attribute name="value" type="string">10b08b8eef5ae3be7dc90d7110f0a6d577e2ccea95d028a3cddc4e7551b13b81</attribute>
+        <attribute name="value" type="string">398831c7e2ead7e64e7e15cefe887376456ec27e97e628ec9528b6e2987689f7</attribute>
         <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z105"></relationship>
         <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z107"></relationship>
     </object>
@@ -1027,7 +1027,7 @@
         <attribute name="name" type="string">Add task to test</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z198"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z205 z202"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z202 z205"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z192">
         <attribute name="order" type="int64">1</attribute>
@@ -1100,7 +1100,7 @@
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Tests</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM" idrefs="z193 z197 z204 z191 z203 z210 z208"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM" idrefs="z213 z208 z203 z210 z204 z197 z193 z191"></relationship>
         <relationship name="bodyparameters" type="0/0" destination="LMKEYVALUE"></relationship>
         <relationship name="headers" type="0/0" destination="LMKEYVALUE"></relationship>
         <relationship name="urlparameters" type="0/0" destination="LMKEYVALUE"></relationship>
@@ -1154,7 +1154,7 @@
         <attribute name="name" type="string">Delete test</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z198"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z199 z200"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z200 z199"></relationship>
     </object>
     <object type="LMREQUEST" id="z204">
         <attribute name="uuid" type="string">AA1346C5-B624-4C2F-B193-82E8F6D6AC8D</attribute>
@@ -1169,7 +1169,7 @@
         <attribute name="name" type="string">Delete task from test</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z198"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z194 z192"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z192 z194"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z205">
         <attribute name="value" type="string">[{"data":{"environmentVariable":"FFC1CAC5-376D-4D4E-892B-F26C761AA73D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"}]</attribute>
@@ -1214,7 +1214,7 @@
         <attribute name="name" type="string">Get list</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z198"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z196 z201"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z201 z196"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z209">
         <attribute name="order" type="int64">1</attribute>
@@ -1226,7 +1226,7 @@
     </object>
     <object type="LMREQUEST" id="z210">
         <attribute name="uuid" type="string">16989480-788F-4BD4-8469-E7E748529855</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"A2BD6D72-7FB1-4A6C-AA13-E3BA5F35B38F"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/v",{"data":{"environmentVariable":"DE7BA2F4-060C-4F0B-9E88-BCCCCBAE35CB"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/tests\\/8\\/tasks"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"A2BD6D72-7FB1-4A6C-AA13-E3BA5F35B38F"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/v",{"data":{"environmentVariable":"DE7BA2F4-060C-4F0B-9E88-BCCCCBAE35CB"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/tests\\/2\\/tasks"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -1256,5 +1256,39 @@
         <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z210"></relationship>
+    </object>
+    <object type="LMREQUEST" id="z213">
+        <attribute name="uuid" type="string">9DAE13C1-6EBC-499E-AC93-28D61BC6FA32</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"A2BD6D72-7FB1-4A6C-AA13-E3BA5F35B38F"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/v",{"data":{"environmentVariable":"DE7BA2F4-060C-4F0B-9E88-BCCCCBAE35CB"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/submissions\\/tests\\/2\\/tasks\\/2"]</attribute>
+        <attribute name="storecookies" type="bool">1</attribute>
+        <attribute name="sendcookies" type="bool">1</attribute>
+        <attribute name="redirectmethod" type="bool">0</attribute>
+        <attribute name="redirectauthorization" type="bool">0</attribute>
+        <attribute name="method" type="string">POST</attribute>
+        <attribute name="followredirects" type="bool">0</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["submission"],[{"data":{"bookmarkData":"Ym9va7wCAAAAAAQQMAAAAJFN00KKxWQlUytwIFXpsck1lojmxkGUP96Dbou3RzEPuAEAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAGAAAAAQEAAEFsZWtvcwAACQAAAAEBAABEb3dubG9hZHMAAAAMAAAAAQEAAG1haW5fc3ViLmNwcBAAAAABBgAAEAAAACAAAAAwAAAARAAAAAgAAAAEAwAAKRICAAAAAAAIAAAABAMAAKnABQAAAAAACAAAAAQDAACswAUAAAAAAAgAAAAEAwAAN8wRBAAAAAAQAAAAAQYAAHAAAACAAAAAkAAAAKAAAAAIAAAAAAQAAEG9p7MZAAAAGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAIAAAABAMAAAIAAAAAAAAABAAAAAMDAAD1AQAACAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAAKD2GwAAAAgAAAAABAAAQbdTgCoAAAAkAAAAAQEAADEzMUM0QTIwLTBDQjktMzVCMi1CNzE3LUQ3MzNBRTVCOUE0RRgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEFAADMAAAA\\/v\\/\\/\\/wEAAAAAAAAAEAAAAAQQAABYAAAAAAAAAAUQAACwAAAAAAAAABAQAADYAAAAAAAAAEAQAADIAAAAAAAAAAIgAACkAQAAAAAAAAUgAAAUAQAAAAAAABAgAAAkAQAAAAAAABEgAABYAQAAAAAAABIgAAA4AQAAAAAAABMgAABIAQAAAAAAACAgAACEAQAAAAAAADAgAACwAQAAAAAAAAHAAAD4AAAAAAAAABHAAAAgAAAAAAAAABLAAAAIAQAAAAAAABDQAAAEAAAAAAAAAA=="},"identifier":"com.luckymarmot.FileContentDynamicValue"}],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
+        <attribute name="order" type="int64">7</attribute>
+        <attribute name="name" type="string">Test submission</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z198"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z214 z215"></relationship>
+    </object>
+    <object type="LMKEYVALUE" id="z214">
+        <attribute name="order" type="int64">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z213"></relationship>
+    </object>
+    <object type="LMKEYVALUE" id="z215">
+        <attribute name="value" type="string">[{"data":{"environmentVariable":"FFC1CAC5-376D-4D4E-892B-F26C761AA73D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"}]</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">x-authorization-token</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z213"></relationship>
     </object>
 </database>

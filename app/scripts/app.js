@@ -42,7 +42,7 @@ angular
                 templateUrl: 'views/tasks.html',
                 controller: 'TasksCtrl'
             })
-            .when('/problems/:problemId?', {
+            .when('/problems/:problemId?/:testId?', {
                 templateUrl: 'views/problems.html',
                 controller: 'ProblemsCtrl'
             })
@@ -50,6 +50,10 @@ angular
                 templateUrl: 'views/tests.html',
                 controller: 'TestsCtrl',
                 controllerAs: 'ctrl'
+            })
+            .when('/studentstests', {
+                templateUrl: 'views/studentstests.html',
+                controller: 'StudentsTestsCtrl'
             })
             .otherwise({
                 redirectTo: '/'

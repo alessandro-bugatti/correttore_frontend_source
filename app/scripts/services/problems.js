@@ -58,4 +58,20 @@ angular.module('frontendStableApp')
                     return $sce.trustAsResourceUrl(fileURL);
                 }, ResourcesGeneratorService.failureHandler);
         };
+
+        this.testSubmission = function (taskId, testId, sourceFile) {
+            if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('teacher')) // Permesso solo agli studenti (sudent <= user < teacher)
+                return $q.reject("User not logged in");
+
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
+
+            return Upload.upload({
+                url: Config.getServerPath() + 'submissions/tests/' + testId + '/tasks/' + taskId,
+                headers: headersObj,
+                data: {submission: sourceFile}
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
+        };
     });

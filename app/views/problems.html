@@ -14,6 +14,7 @@
 <md-card layout-padding ng-if="problemId && !loading">
     <md-content style="background-color: inherit;">
         <h2 class="cardHeader problem">
+            <span ng-if="testObject" class="monospace">{{testObject.description}} - </span>
             {{problem.title}} (<span class="monospace">{{problem.short_title}}</span>)
         </h2>
         <md-tabs md-dynamic-height md-border-bottom>

@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('ProblemsCtrl', function (AuthService, ProblemsService, ProblemsParserService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog) {
+    .controller('ProblemsCtrl', function (AuthService, ProblemsService, TestsService, ProblemsParserService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog, $q) {
         if ((!AuthService.isLogged() && AuthService.getAuthToken()) || !AuthService.getLoginResponse().username) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -26,6 +26,7 @@ angular.module('frontendStableApp')
         $scope.pdfLoading = true;
         $rootScope.$emit('loading-start');
         $scope.problemId = null;
+        $scope.testObject = null;
         $scope.loadingSubmission = false;
 
         if ($routeParams.problemId) {
@@ -93,15 +94,40 @@ angular.module('frontendStableApp')
                 $scope.problem[fileName] = file[0];
             };
 
-            ProblemsService.getOneProblem($scope.problemId) // TODO: error handling
+            var promisesArray = [ProblemsService.getOneProblem($scope.problemId)];
+            if ($routeParams.testId) {
+                promisesArray.push(TestsService.getList());
+                promisesArray.push(TestsService.getTasks($routeParams.testId));
+            }
+
+            var filterTestObject = function (testList) {
+                if (typeof testList != 'object' || testList.length == 0)
+                    return null;
+
+                return testList.filter(function (e) {
+                    return e.id == $routeParams.testId;
+                })[0];
+            };
+
+            $q.all(promisesArray) // TODO: error handling
                 .then(function (response) {
-                    $scope.problem = response;
+                    var testList = response[1],
+                        testTasks = response[2];
+
+                    $scope.problem = response[0];
                     $scope.loading = false;
                     $rootScope.$emit('loading-stop');
 
+                    var taskPresent = testTasks.filter(function (e) {
+                            return e.id == $scope.problemId;
+                        }).length > 0;
+
+                    if ($routeParams.testId)
+                        $scope.testObject = filterTestObject(testList || []);
+                    if (!$scope.testObject || !taskPresent)
+                        return $q.reject("Verifica non valida");
+
                     return ProblemsService.getPDF($scope.problemId);
-                }, function (error) {
-                    $location.path('/problems');
                 })
                 .then(function (response) {
                     $scope.problem.pdf = response;
@@ -109,6 +135,8 @@ angular.module('frontendStableApp')
                 }, function (error) {
                     $scope.pdfLoading = false;
                     $log.error(error);
+                    if ($routeParams.testId)
+                        $location.path("/tests/" + $routeParams.testId);
                 });
 
         } else {
