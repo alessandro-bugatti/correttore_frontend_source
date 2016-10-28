@@ -16,7 +16,7 @@ angular.module('frontendStableApp')
 
         var anonSubmission = function (problemId, sourceFile) {
             return Upload.upload({
-                url: Config.getServerPath() + 'public/submission/' + problemId,
+                url: Config.getServerPath() + 'public/submissions/' + problemId,
                 data: {submission: sourceFile}
             })
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
@@ -31,7 +31,7 @@ angular.module('frontendStableApp')
             headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
 
             return Upload.upload({
-                url: Config.getServerPath() + 'public/submission/' + problemId,
+                url: Config.getServerPath() + 'public/submissions/' + problemId,
                 headers: headersObj,
                 data: {submission: sourceFile}
             })
