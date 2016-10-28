@@ -118,14 +118,18 @@ angular.module('frontendStableApp')
                     $scope.loading = false;
                     $rootScope.$emit('loading-stop');
 
-                    var taskPresent = testTasks.filter(function (e) {
-                            return e.id == $scope.problemId;
-                        }).length > 0;
-
-                    if ($routeParams.testId)
+                    if ($routeParams.testId) {
                         $scope.testObject = filterTestObject(testList || []);
-                    if (!$scope.testObject || !taskPresent)
-                        return $q.reject("Verifica non valida");
+
+                        var taskPresent = (testTasks || []).filter(function (e) {
+                                return e.id == $scope.problemId;
+                            }).length > 0;
+
+                        if (!$scope.testObject || !taskPresent) {
+                            return $q.reject("Verifica non valida");
+
+                        }
+                    }
 
                     return ProblemsService.getPDF($scope.problemId);
                 })
