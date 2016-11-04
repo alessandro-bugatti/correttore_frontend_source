@@ -53,6 +53,7 @@ angular.module('frontendStableApp')
                 description: 'Visualizza le verifiche',
                 icon: 'graduation-cap',
                 allowed: ['student'],
+                forbidden: ['admin', 'teacher'],
                 link: '/studentstests'
             },
             {

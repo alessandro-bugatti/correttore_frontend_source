@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TestsCtrl', function (AuthService, TestsService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $q) {
+    .controller('TestsCtrl', function (AuthService, TestsService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $q, $mdDialog, $mdMedia) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -60,6 +60,16 @@ angular.module('frontendStableApp')
 
             $scope.querySearch = function (query) {
                 return query ? $scope.tasks.filter(function (e) {
+                    if (e.is_public != "0") // non pubblico
+                        return false;
+
+                    var duplicato = self.testTasks.some(function (x) {
+                        return x.title == e.title;
+                    });
+
+                    if (duplicato)
+                        return false;
+
                     var title = e.title.toLowerCase();
                     return title.lastIndexOf(query.toLowerCase(), 0) === 0; // startsWith
                 }) : [];
@@ -69,7 +79,9 @@ angular.module('frontendStableApp')
                 $scope.loading = false;
                 $rootScope.$emit('loading-stop');
             } else {
-                TestsService.getList() // TODO: ci vorrebbe una chiamata per ottenere un singolo gruppo
+                $scope.risultati = [];
+
+                TestsService.getList() // TODO: ci vorrebbe una chiamata per ottenere un singolo test
                     .then(function (response) {
                         for (var i = 0; i < response.length; i++)
                             if (response[i].id == $scope.testId)
@@ -80,21 +92,64 @@ angular.module('frontendStableApp')
                             return $q.reject('Invalid testId');
                         }
 
-                        return TestsService.getTasks($scope.testId);
+                        return $q.all([
+                            TestsService.getTasks($scope.testId),
+                            TestsService.getClassResults($scope.testId),
+                            TasksService.getList()]
+                        );
                     })
-                    .then(function (response) {
-                        $log.debug(response);
-                        self.testTasks = response;
-                        originalTestTasks = JSON.parse(JSON.stringify(response)); // Deep copy
+                    .then(function (responses) {
+                        console.log(arguments);
 
-                        return TasksService.getList();
-                    })
-                    .then(function (response) {
-                        $scope.tasks = response;
+                        var testTasks = responses[0];
+                        var results = responses[1];
+                        var tasksList = responses[2];
+
+                        self.testTasks = testTasks;
+                        originalTestTasks = JSON.parse(JSON.stringify(testTasks)); // Deep copy
+
+                        $scope.risultati = results;
+                        $scope.tasks = tasksList;
 
                         $scope.loading = false;
                         $rootScope.$emit('loading-stop');
-                    })
+                    });
+
+                $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm'); // TODO: portare nel rootScope insieme al watch
+                var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+
+                $scope.openRisultatiStudente = function (studenteId, testId, score, fullName, event) {
+                    var result = {};
+
+                    $mdDialog.show({
+                        controller: 'DialogCtrl',
+                        templateUrl: 'views/taskresult.html',
+                        parent: angular.element(document.body),
+                        targetEvent: event,
+                        clickOutsideToClose: true,
+                        fullscreen: useFullScreen,
+                        locals: {
+                            items: {
+                                rootScope: $rootScope,
+                                result: result,
+                                score: score,
+                                fullName: fullName
+                            }
+                        }
+                    });
+
+                    TestsService.getStudentResult(studenteId, testId)
+                        .then(function (response) {
+                            result.data = response;
+
+                        })
+                };
+
+                $scope.$watch(function () {
+                    return $mdMedia('xs') || $mdMedia('sm');
+                }, function (wantsFullScreen) {
+                    $scope.customFullscreen = (wantsFullScreen === true);
+                });
             }
 
             $scope.save = function () {
@@ -145,6 +200,23 @@ angular.module('frontendStableApp')
                     $scope.loading = false;
                     $rootScope.$emit('loading-stop');
                     $scope.tests = response;
+
+                    var resultsPromises = [];
+
+                    $scope.tests.forEach(function (t) {
+                        t.loadingResults = true;
+                        resultsPromises.push(
+                            TestsService.getClassResults(t.id)
+                        );
+                    });
+
+                    return $q.all(resultsPromises);
+                })
+                .then(function (testResults) {
+                    testResults.forEach(function (results, index) {
+                        $scope.tests[index].loadingResults = false;
+                        $scope.tests[index].results = results;
+                    });
                 });
         }
 

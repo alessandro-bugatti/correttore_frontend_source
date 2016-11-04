@@ -89,4 +89,31 @@ angular.module('frontendStableApp')
                 .$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
+
+        this.getClassResults = function (testId) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            return ResourcesGeneratorService
+                .getResource(AuthService.getAuthToken(), 'tests/:testId/results')
+                .query({
+                    testId: testId
+                })
+                .$promise
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+        };
+
+        this.getStudentResult = function (studentId, testId) {
+            if (!AuthService.isLogged || AuthService.atLeast('admin')) // Solo < di admin
+                return $q.reject("User not logged in");
+
+            return ResourcesGeneratorService
+                .getResource(AuthService.getAuthToken(), 'tests/:testId/users/:studentId/details')
+                .query({
+                    testId: testId,
+                    studentId: studentId
+                })
+                .$promise
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+        }
     });

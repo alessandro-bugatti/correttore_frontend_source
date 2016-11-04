@@ -5,9 +5,15 @@
         <md-list-item class="md-2-line" ng-repeat="verifica in tests" ng-click="openTest(verifica.id)">
             <md-icon md-font-icon="fa-graduation-cap" class="fa"
                      style="font-size: 38px;"></md-icon>
+            <md-icon ng-if="verifica.is_on == '1'" md-font-icon="fa-check-circle" class="fa check-over-icon"></md-icon>
             <div class="md-list-item-text">
                 <h3>{{verifica.description}}</h3>
-                <p>TODO: come usiamo questa riga?</p>
+                <p>
+                    <md-progress-circular ng-if="verifica.loadingResults"
+                                          class="loading-description"></md-progress-circular>
+                    <span ng-if="!verifica.loadingResults">
+                        {{verifica.results.length}} alunn{{verifica.results.length == 1 ? 'o' : 'i'}} ha{{verifica.results.length != 1 ? 'nno' : ''}} sottomesso una soluzione</span>
+                </p>
             </div>
             <md-button class="md-secondary md-icon-button md-raised"
                        ng-click="deleteTest(verifica.id, $index, $event)" aria-label="call">
@@ -19,7 +25,7 @@
 </md-card>
 
 <md-card layout-padding ng-if="testId && !loading">
-    <h2>{{testId == 'new' ? 'Aggiungi' : 'Modifica'}} Verifica</h2>
+    <h2 class="cardHeader">{{testId == 'new' ? 'Aggiungi' : 'Modifica'}} Verifica</h2>
     <md-content style="background-color: white;">
         <div>
             <form name="testForm">
@@ -71,3 +77,28 @@
     </md-content>
 </md-card>
 
+<md-card layout-padding ng-if="testId && !loading && testId != 'new'" style="padding: 8px 0;">
+    <h2 class="cardHeader" style="margin-left: 8px;">Risultati</h2>
+    <md-content style="background-color: white; padding: 0;">
+        <md-list class="no-padding">
+            <md-list-item class="md-2-line" ng-repeat="studente in risultati"
+                          ng-click="openRisultatiStudente(studente.ID, testId, studente.result, studente.surname + ' ' + studente.name, $event)">
+                <md-icon md-font-icon="fa-file-code-o" class="fa"
+                         style="font-size: 38px;"></md-icon>
+                <md-icon ng-if="studente.result == 100" md-font-icon="fa-check-circle-o"
+                         class="fa check-over-icon"></md-icon> <!-- FIXME: max score (issue #12)? -->
+                <div class="md-list-item-text">
+                    <h3>{{studente.surname}} {{studente.name}} (<span class="monospace">{{studente.username}}</span>)
+                    </h3>
+                    <p>
+                        Punteggio: {{studente.result | number: 2}}
+                    </p>
+                </div>
+            </md-list-item>
+        </md-list>
+
+        <div ng-if="risultati.length == 0" style="text-align: center; padding: 30px 0;">Nessuno studente ha sottomesso
+            una soluzione
+        </div>
+    </md-content>
+</md-card>

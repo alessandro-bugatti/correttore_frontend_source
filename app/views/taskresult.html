@@ -1,0 +1,43 @@
+<md-dialog aria-label="Dettagli Punteggio" md-theme="{{rootScope.theme}}" class="submission-popup">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Dettagli Punteggio - {{fullName}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon md-font-icon="fa-close" style="font-size: 20px;" class="fa"
+                             aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" style="padding-left: 0; padding-right: 0;">
+                <h2 class="cardHeader" style="margin-left: 24px;">Punteggio: {{score | number: 2}}</h2>
+
+                <md-content style="background-color: white; padding: 0; position: relative; margin-top: 8px;"
+                            ng-style="{'min-height': result.data ? '0' : '150px'}" class="animated-height">
+                    <md-progress-circular ng-if="!result.data" class="central"></md-progress-circular>
+
+                    <md-list class="no-padding" ng-if="result.data">
+                        <md-list-item class="md-2-line" ng-repeat="task in result.data" ng-click="null">
+                            <md-icon md-font-icon="fa-code" class="fa"
+                                     style="font-size: 38px;"></md-icon>
+                            <md-icon ng-if="task.score == task.test_cases" md-font-icon="fa-check-circle-o"
+                                     class="fa check-over-icon"></md-icon> <!-- FIXME: max score (issue #12)? -->
+                            <div class="md-list-item-text">
+                                <h3>{{task.short_title}}</h3>
+                                <p>
+                                    Risultato: {{task.score}}/{{task.test_cases}}
+                                </p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+
+                    <div ng-if="result.data.length == 0" style="text-align: center; padding: 30px 0;">Nessuna
+                        sottomissione
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>
