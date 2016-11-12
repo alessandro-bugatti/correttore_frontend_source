@@ -54,6 +54,7 @@
                                 md-search-text="searchText"
                                 md-items="item in querySearch(searchText)"
                                 md-item-text="item.title"
+                                md-min-length="0"
                                 placeholder="Aggiungi dei problemi">
                                 <span md-highlight-text="searchText">{{item.title}}</span>
                             </md-autocomplete>
@@ -86,7 +87,7 @@
                 <md-icon md-font-icon="fa-file-code-o" class="fa"
                          style="font-size: 38px;"></md-icon>
                 <md-icon ng-if="studente.result == 100" md-font-icon="fa-check-circle-o"
-                         class="fa check-over-icon"></md-icon> <!-- FIXME: max score (issue #12)? -->
+                         class="fa check-over-icon"></md-icon> <!-- Il punteggio massimo dovrebbe essere 100 -->
                 <div class="md-list-item-text">
                     <h3>{{studente.surname}} {{studente.name}} (<span class="monospace">{{studente.username}}</span>)
                     </h3>

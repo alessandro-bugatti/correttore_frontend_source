@@ -10,6 +10,7 @@
 angular.module('frontendStableApp')
     .service('AuthService', function (ResourcesGeneratorService, $q, $window) {
         var authToken = $window.localStorage.getItem('authToken');
+        var userId = null;
         var isLogged = false;
         var userRole = 0;
         var loginResponse = {};
@@ -95,6 +96,10 @@ angular.module('frontendStableApp')
             return authToken != undefined && authToken != null;
         };
 
+        this.getUserId = function () {
+            return userId;
+        };
+
         function assignRoleValue(roleName) {
             userRole = 0;
 
@@ -117,6 +122,7 @@ angular.module('frontendStableApp')
                 .then(function (response) {
                     $window.localStorage.setItem('authToken', response.token);
                     authToken = response.token;
+                    userId = response.id;
                     isLogged = true;
                     loginResponse = response;
                     assignRoleValue(response.role);

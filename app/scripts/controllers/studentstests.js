@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('StudentsTestsCtrl', function (AuthService, TestsService, $location, $rootScope, $scope, $timeout) {
+    .controller('StudentsTestsCtrl', function (AuthService, TestsService, $location, $rootScope, $scope, $q) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -26,7 +26,6 @@ angular.module('frontendStableApp')
 
         $scope.loading = true;
         $rootScope.$emit('loading-start');
-        $scope.testId = null;
 
         $scope.tests = [];
         TestsService.getList() // TODO: error handling
@@ -34,6 +33,24 @@ angular.module('frontendStableApp')
                 $scope.loading = false;
                 $rootScope.$emit('loading-stop');
                 $scope.tests = response;
+
+                var resultPromises = [];
+
+                $scope.tests.forEach(function (e) {
+                    console.log(e);
+                    e.loadingResults = true;
+                    resultPromises.push(
+                        TestsService.getStudentResult(AuthService.getUserId(), e.id)
+                    );
+                });
+
+                return $q.all(resultPromises);
+            })
+            .then(function (results) {
+                $scope.tests.forEach(function (e, index) {
+                    e.loadingResults = false;
+                    e.results = results[index];
+                });
             });
 
         $scope.tasksForTest = {};
