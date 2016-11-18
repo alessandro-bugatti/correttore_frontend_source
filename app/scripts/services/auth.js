@@ -169,6 +169,7 @@ angular.module('frontendStableApp')
                 .then(function (response) {
                     isLogged = true;
                     loginResponse = response;
+                    userId = response.id;
                     assignRoleValue(response.role);
 
                     return response;

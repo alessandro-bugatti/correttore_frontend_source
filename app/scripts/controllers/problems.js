@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('ProblemsCtrl', function (AuthService, ProblemsService, TestsService, ProblemsParserService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog, $q) {
+    .controller('ProblemsCtrl', function (AuthService, ProblemsService, TestsService, ProblemsParserService, $scope, $timeout, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog, $q) {
         if ((!AuthService.isLogged() && AuthService.getAuthToken()) || !AuthService.getLoginResponse().username) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -42,9 +42,7 @@ angular.module('frontendStableApp')
             };
 
             var openSubmissionDetailsDialog = function (ev, score, lines) {
-                var output = ProblemsParserService.parse(lines);
-
-                console.log(output);
+                var output = ProblemsParserService.parse(lines); // FIXME: ripristinare
 
                 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
                 $mdDialog.show({
@@ -58,7 +56,7 @@ angular.module('frontendStableApp')
                         items: {
                             rootScope: $rootScope,
                             score: score,
-                            lines: output
+                            lines: lines
                         }
                     }
                 });
@@ -76,7 +74,13 @@ angular.module('frontendStableApp')
                 $scope.problem.sourceFile = null;
                 $scope.loadingSubmission = true;
 
-                ProblemsService.submitFile($scope.problemId, problemFile)
+                var submissionPromise = null;
+                if ($routeParams.testId)
+                    submissionPromise = ProblemsService.testSubmitFile($scope.problemId, $routeParams.testId, problemFile);
+                else
+                    submissionPromise = ProblemsService.submitFile($scope.problemId, problemFile);
+
+                submissionPromise
                     .then(function (response) {
                         var score = parseFloat(response.data.score);
                         var lines = response.data.lines; // TODO: parse
@@ -94,10 +98,13 @@ angular.module('frontendStableApp')
                 $scope.problem[fileName] = file[0];
             };
 
-            var promisesArray = [ProblemsService.getOneProblem($scope.problemId)];
+            var promisesArray = [];
             if ($routeParams.testId) {
+                promisesArray.push(ProblemsService.testGetOneProblem($scope.problemId));
                 promisesArray.push(TestsService.getList());
                 promisesArray.push(TestsService.getTasks($routeParams.testId));
+            } else {
+                promisesArray.push(ProblemsService.getOneProblem($scope.problemId));
             }
 
             var filterTestObject = function (testList) {
@@ -125,13 +132,12 @@ angular.module('frontendStableApp')
                                 return e.id == $scope.problemId;
                             }).length > 0;
 
-                        if (!$scope.testObject || !taskPresent) {
+                        if (!$scope.testObject || !taskPresent)
                             return $q.reject("Verifica non valida");
 
-                        }
-                    }
-
-                    return ProblemsService.getPDF($scope.problemId);
+                        return ProblemsService.testGetPDF($scope.problemId);
+                    } else
+                        return ProblemsService.getPDF($scope.problemId);
                 })
                 .then(function (response) {
                     $scope.problem.pdf = response;

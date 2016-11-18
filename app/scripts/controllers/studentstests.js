@@ -37,7 +37,6 @@ angular.module('frontendStableApp')
                 var resultPromises = [];
 
                 $scope.tests.forEach(function (e) {
-                    console.log(e);
                     e.loadingResults = true;
                     resultPromises.push(
                         TestsService.getStudentResult(AuthService.getUserId(), e.id)

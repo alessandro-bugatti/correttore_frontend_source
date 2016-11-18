@@ -59,7 +59,32 @@ angular.module('frontendStableApp')
                 }, ResourcesGeneratorService.failureHandler);
         };
 
-        this.testSubmission = function (taskId, testId, sourceFile) {
+        this.testGetOneProblem = function (problemId) {
+            if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('teacher')) // Permesso solo agli studenti (sudent <= user < teacher)
+                return $q.reject("User not logged in");
+
+            return ResourcesGeneratorService.getResource(AuthService.getAuthToken(), 'problems/:id').get({id: problemId}).$promise
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+        };
+
+        this.testGetPDF = function (problemId) {
+            if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('teacher')) // Permesso solo agli studenti (sudent <= user < teacher)
+                return $q.reject("User not logged in");
+
+            return $http.get(Config.getServerPath() + 'problems/' + problemId + '.pdf', {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Authorization-Token': AuthService.getAuthToken()
+                }
+            })
+                .then(function (response) {
+                    var file = new Blob([response.data], {type: 'application/pdf'});
+                    var fileURL = URL.createObjectURL(file);
+                    return $sce.trustAsResourceUrl(fileURL);
+                }, ResourcesGeneratorService.failureHandler);
+        };
+
+        this.testSubmitFile = function (taskId, testId, sourceFile) {
             if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('teacher')) // Permesso solo agli studenti (sudent <= user < teacher)
                 return $q.reject("User not logged in");
 
