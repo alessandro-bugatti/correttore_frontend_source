@@ -5,6 +5,7 @@
         <md-list-item class="md-2-line" ng-repeat="task in tasks" ng-click="openTask(task.id)">
             <md-icon md-font-icon="fa-tasks" class="fa"
                      style="font-size: 38px;"></md-icon>
+            <md-icon ng-if="task.is_public == '1'" md-font-icon="fa-unlock-alt" class="fa check-over-icon"></md-icon>
             <div class="md-list-item-text">
                 <h3>{{task.title}}</h3>
                 <!-- <p>Linea aggiuntiva non utilizzata</p> -->
