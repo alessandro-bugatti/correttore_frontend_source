@@ -35,6 +35,14 @@ angular.module('frontendStableApp')
                 link: '/teachers'
             },
             {
+                title: 'Studenti',
+                description: 'Gestisci gli studenti',
+                icon: 'graduation-cap',
+                allowed: 'teacher',
+                forbidden: 'admin',
+                link: '/students'
+            },
+            {
                 title: 'Gruppi',
                 description: 'Gestisci i gruppi',
                 icon: 'users',

@@ -1,0 +1,61 @@
+<md-card layout-fill class="no-padding" ng-if="!studentId && !loading">
+    <md-button class="md-primary md-raised" ng-click="$location.path('/students/new')">Aggiungi Studente</md-button>
+    <md-list class="no-padding">
+        <md-list-item class="md-2-line" ng-repeat="student in students" ng-click="openStudent(student.id)">
+            <md-icon md-font-icon="fa-graduation-cap" class="fa"
+                     style="font-size: 38px;"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{student.name}} {{student.surname}}</h3>
+                <p>{{student.username}}</p>
+            </div>
+            <md-button class="md-secondary md-icon-button md-raised"
+                       ng-click="deleteStudent(student.id, $index, $event)" aria-label="call">
+                <md-icon md-font-icon="fa-trash" class="fa"
+                         style="font-size: 25px;"></md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-card>
+
+<md-card layout-padding ng-if="studentId && !loading">
+    <h2 class="cardHeader">{{studentId == 'new' ? 'Aggiungi' : 'Modifica'}} Studente</h2>
+    <md-content style="background-color: white;">
+        <div>
+            <form name="studentForm">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Nome</label>
+                        <input ng-model="user.name" required>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Cognome</label>
+                        <input ng-model="user.surname" required>
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Username</label>
+                        <input ng-model="user.username" ng-disabled="studentId != 'new'" required>
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Password</label>
+                        <input ng-model="user.password" type="password">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Conferma Password</label>
+                        <input ng-model="user.password2" type="password">
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-content layout="row" layout-align="end center" style="background-color: white;">
+        <md-button class="md-primary md-raised"
+                   ng-disabled="studentForm.$invalid || user.password != user.password2 || (studentId == 'new' && user.password.length == 0)"
+                   ng-click="save()">Salva
+        </md-button>
+    </md-content>
+</md-card>
+
