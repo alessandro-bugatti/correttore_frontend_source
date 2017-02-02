@@ -8,7 +8,7 @@
  * Service of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .service('TasksService', function (ResourcesGeneratorService, AuthService, $q) {
+    .service('TasksService', function (ResourcesGeneratorService, Upload, Config, AuthService, $q) {
         this.getList = function () {
             if (!AuthService.isLogged || !AuthService.atLeast('teacher'))
                 return $q.reject("User not logged in"); // FIXME: update error string
@@ -25,12 +25,36 @@ angular.module('frontendStableApp')
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
 
-        this.addTask = function (formData) { // TODO: test
+        this.updateTask = function (taskId, formData) {
             if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
                 return $q.reject("User not logged in");
 
-            return ResourcesGeneratorService.getResource(AuthService.getAuthToken(), 'tasks').create(formData).$promise
-                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
+
+            return Upload.upload({
+                url: Config.getServerPath() + 'tasks/' + taskId,
+                headers: headersObj,
+                data: formData
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
+        };
+
+        this.addTask = function (formData) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            var headersObj = {};
+            headersObj[Config.getAuthTokenName()] = AuthService.getAuthToken();
+
+            return Upload.upload({
+                url: Config.getServerPath() + 'tasks',
+                headers: headersObj,
+                data: formData
+            })
+                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                }); // FIXME: usare progresso
         };
 
         this.deleteTask = function (taskId) {

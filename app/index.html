@@ -3,11 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>Correttore</title>
-    <meta name="description" content="">
+    <meta name="description" content="Correttore Frontend">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -20,18 +22,55 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<!-- Add your site or application content here -->
-<a class="navbar-brand" href="#/">frontendStable</a>
+<div layout="column" style="height: 100%;" ng-app="frontendStableApp" md-theme="{{theme}}" ng-cloak>
+    <section layout="row" flex="" ng-controller="SidenavCtrl">
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
+                    md-is-locked-open="$mdMedia('gt-md') && !closed">
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools" ng-if="authService.getLoginResponse().username"><span
+                    class="sidenav-small-title">Loggato come</span>&nbsp;{{authService.getLoginResponse().username}}
+                </h1>
+            </md-toolbar>
+            <md-content class="sidenav-content" layout-fill>
+                <md-list>
+                    <span ng-repeat="entry in menuEntries" ng-if="display(entry)">
+                        <md-list-item class="md-2-line"
+                                      ng-click="handleClick(entry, $event)">
+                            <md-icon md-font-icon="fa-{{entry.icon}}" class="fa"
+                                     style="font-size: 38px;"></md-icon>
+                            <div class="md-list-item-text">
+                                <h3>{{entry.title}}</h3>
+                                <p>{{entry.description}}</p>
+                            </div>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </span>
+                </md-list>
+            </md-content>
+        </md-sidenav>
 
-<div>
-    <div ng-view=""></div>
+        <md-content flex style="position: relative;">
+            <md-toolbar class="md-theme-indigo" style="position: initial;" ng-controller="ToolbarCtrl" ng-hide="hide">
+                <h1 class="md-toolbar-tools">
+                    <md-button hide-gt-md class="md-icon-button" style="font-size: 21px; margin-right: 2px;"
+                               ng-click="openSidenav()"
+                               aria-label="Open Sidenav">
+                        <md-icon md-font-icon="fa-bars" class="fa"></md-icon>
+                    </md-button>
+
+                    <md-button ng-if="showBack" class="md-icon-button" style="font-size: 21px; margin-right: 2px;"
+                               ng-click="goBack()"
+                               aria-label="Go Back">
+                        <md-icon md-font-icon="fa-chevron-left" class="fa"></md-icon>
+                    </md-button>
+                </h1>
+                <md-progress-circular md-mode="indeterminate" class="central" ng-if="loading"></md-progress-circular>
+            </md-toolbar>
+            <div style="position: relative;" ng-view layout-padding></div>
+        </md-content>
+    </section>
 </div>
 
-<div>
-    <div>
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-    </div>
-</div>
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
@@ -43,7 +82,8 @@
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -52,11 +92,29 @@
 <script src="scripts/providers/config.js"></script>
 <script src="scripts/directives/filemodel.js"></script>
 <script src="scripts/controllers/main.js"></script>
+<script src="scripts/controllers/sidenav.js"></script>
+<script src="scripts/controllers/toolbar.js"></script>
+<script src="scripts/controllers/dialog.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/teachers.js"></script>
+<script src="scripts/controllers/groups.js"></script>
+<script src="scripts/controllers/tasks.js"></script>
+<script src="scripts/controllers/problems.js"></script>
+<script src="scripts/controllers/tests.js"></script>
+<script src="scripts/controllers/studentstests.js"></script>
+<script src="scripts/controllers/students.js"></script>
 <script src="scripts/services/resourcesgenerator.js"></script>
 <script src="scripts/services/auth.js"></script>
 <script src="scripts/services/teachers.js"></script>
 <script src="scripts/services/tasks.js"></script>
 <script src="scripts/services/groups.js"></script>
+<script src="scripts/services/problems.js"></script>
+<script src="scripts/services/categories.js"></script>
+<script src="scripts/services/problemsparser.js"></script>
+<script src="scripts/services/tests.js"></script>
+<script src="scripts/services/students.js"></script>
+<script src="scripts/filters/roleformatter.js"></script>
+<script src="scripts/filters/filesizeformatter.js"></script>
 <!-- endbuild -->
 </body>
 </html>

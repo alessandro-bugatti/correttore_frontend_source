@@ -1,0 +1,24 @@
+<md-dialog aria-label="About Us" md-theme="{{rootScope.theme}}">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>About Us</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon md-font-icon="fa-close" style="font-size: 20px;" class="fa"
+                             aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2 style="margin-top: 0;">Correttore</h2>
+                <p>
+                    Questa parte è sicuramente da riscrivere, ho tolto almeno il vecchio testo di prova.
+                </p>
+
+                <h5>Versione: {{clientVersion}}</h5>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

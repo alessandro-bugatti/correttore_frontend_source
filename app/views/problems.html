@@ -1,0 +1,66 @@
+<md-card layout-fill class="no-padding" ng-if="!problemId && !loading">
+    <md-list class="no-padding">
+        <md-list-item class="md-2-line" ng-repeat="problem in problems" ng-click="openProblem(problem.id)">
+            <md-icon md-font-icon="fa-code" class="fa"
+                     style="font-size: 38px;"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{problem.title}}</h3>
+                <!-- <p>Linea aggiuntiva non utilizzata</p> -->
+            </div>
+        </md-list-item>
+    </md-list>
+</md-card>
+
+<md-card layout-padding ng-if="problemId && !loading">
+    <md-content style="background-color: inherit;">
+        <h2 class="cardHeader problem">
+            <span ng-if="testObject" class="monospace">{{testObject.description}} - </span>
+            {{problem.title}} (<span class="monospace">{{problem.short_title}}</span>)
+        </h2>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Testo">
+                <div style="position: relative; min-height: 200px; clear: both;">
+                    <embed ng-if="problem.pdf" style="width: 100%; height: 85vh;" ng-src="{{problem.pdf}}"></embed>
+                    <md-progress-circular ng-if="pdfLoading"
+                                          style="left: calc(50% - 25px); top: calc(50% - 25px); position: absolute"
+                                          md-mode="indeterminate"></md-progress-circular>
+                    <h1 ng-if="!pdfLoading && !problem.pdf" style="text-align: center; padding-top: 90px;">Testo
+                        attualmente non disponibile</h1>
+                </div>
+            </md-tab>
+
+            <md-tab label="Sottomissioni">
+                <div>
+                    <form name="submitForm">
+                        <div layout-gt-sm="row" style="justify-content: space-around;">
+                            <div ngf-select ngf-drop ngf-change="setFile('sourceFile', $files)"
+                                 class="drop-box with-margin task-submission"
+                                 ng-class="{'dark': currentThemeObj.isDark}"
+                                 ngf-drag-over-class="'dragover'" ng-disabled="loadingSubmission">
+
+                                <div class="inline-progress-circular">
+                                    <span>Codice Sorgente</span>
+                                    <md-progress-circular ng-show="loadingSubmission"
+                                                          class="inline-progress-circular"
+                                                          md-mode="indeterminate"></md-progress-circular>
+                                </div>
+                                <div class="filename" ng-if="problem.sourceFile">
+                                    {{problem.sourceFile.name}} - {{problem.sourceFile.size | fileSizeFormatter}}
+                                </div>
+
+                            </div>
+                            <div ngf-no-file-drop>Drag and Drop non disponibile. Fare click per caricare</div>
+                        </div>
+                    </form>
+                </div>
+                <md-content layout="row" layout-align="end center" style="background-color: inherit;">
+                    <md-button class="md-primary md-raised"
+                               ng-disabled="submitForm.$invalid || !problem.sourceFile"
+                               ng-click="submit()">Sottometti
+                    </md-button>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</md-card>
+

@@ -1,0 +1,125 @@
+<md-card layout-fill class="no-padding" ng-if="!taskId && !loading">
+    <md-button class="md-primary md-raised" ng-if="isTeacherOnly" ng-click="$location.path('/tasks/new')">Nuovo Problema
+    </md-button>
+    <md-list class="no-padding">
+        <md-list-item class="md-2-line" ng-repeat="task in tasks" ng-click="openTask(task.id)">
+            <md-icon md-font-icon="fa-tasks" class="fa"
+                     style="font-size: 38px;"></md-icon>
+            <md-icon ng-if="task.is_public == '1'" md-font-icon="fa-unlock-alt" class="fa check-over-icon"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{task.title}}</h3>
+                <!-- <p>Linea aggiuntiva non utilizzata</p> -->
+            </div>
+            <md-button ng-if="isTeacherOnly" class="md-secondary md-icon-button md-raised"
+                       ng-click="deleteTask(task.id, $index, $event)" aria-label="call">
+                <md-icon md-font-icon="fa-trash" class="fa"
+                         style="font-size: 25px;"></md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-card>
+
+<md-card layout-padding ng-if="taskId && !loading">
+    <h2 class="cardHeader">{{taskId == 'new' ? 'Aggiungi' : 'Dettagli'}} Problema</h2>
+    <md-content style="background-color: inherit;">
+        <div>
+            <form name="taskForm">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Titolo</label>
+                        <input ng-model="task.title" required ng-disabled="!isTeacherOnly">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Sottotitolo</label>
+                        <input ng-model="task.short_title" required ng-disabled="!isTeacherOnly">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <md-checkbox ng-model="task.is_public" ng-true-value="'1'" ng-false-value="'0'"
+                                     aria-label="Is Public" style="margin: auto;" ng-disabled="!isTeacherOnly">
+                            Problema Pubblico
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Livello</label>
+                        <md-select ng-model="task.level" required ng-disabled="!isTeacherOnly">
+                            <md-option ng-repeat="num in [1, 2, 3, 4, 5, 6, 7, 8]" ng-value="num">
+                                {{num}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="md-block select-plus-button" flex-gt-sm>
+                        <label>Categoria</label>
+                        <md-progress-circular ng-if="loadingCategories" md-mode="indeterminate"></md-progress-circular>
+                        <md-select ng-model="task.category_id" required ng-disabled="!isTeacherOnly">
+                            <md-option ng-repeat="categoria in categorie" ng-value="categoria.id">
+                                {{categoria.description}}
+                            </md-option>
+                        </md-select>
+                        <md-button ng-disabled="!isTeacherOnly" ng-click="newCategory()"
+                                   class="md-icon-button md-primary" aria-label="Aggiungi Categoria">
+                            <md-icon md-font-icon="fa-plus-square" class="fa"></md-icon>
+                        </md-button>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <!-- TODO: mostrare messaggio di errore per valore non valido -->
+                        <label>Numero di Test Case</label>
+                        <input type="number" step="1" ng-model="task.test_cases" min="1"
+                               max="50" required ng-disabled="!isTeacherOnly">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row" style="justify-content: space-around;">
+                    <div ngf-select ngf-drop ngf-change="setFile('description', $files)" class="drop-box"
+                         ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
+                         ng-disabled="!isTeacherOnly">
+                        Descrizione
+                        <div class="filename" ng-if="task.description">
+                            {{task.description.name}} - {{task.description.size | fileSizeFormatter}}
+                        </div>
+                    </div>
+                    <div ngf-no-file-drop>Drag and Drop non disponibile</div>
+
+                    <div ngf-select ngf-drop ngf-change="setFile('solution', $files)" class="drop-box"
+                         ngf-drag-over-class="'dragover'"
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
+                         ng-disabled="!isTeacherOnly">
+                        Soluzione
+                        <div class="filename" ng-if="task.solution">
+                            {{task.solution.name}} - {{task.solution.size | fileSizeFormatter}}
+                        </div>
+                    </div>
+                    <div ngf-no-file-drop>Drag and Drop non disponibile</div>
+
+                    <div ngf-select ngf-drop ngf-change="setFile('material', $files)" class="drop-box"
+                         ngf-drag-over-class="'dragover'"
+                         ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit', 'margin-top': '15px', 'margin-left': 0}"
+                         ng-class="{'dark': currentThemeObj.isDark}"
+                         ng-disabled="!isTeacherOnly">
+                        Materiale
+                        <div class="filename" ng-if="task.material">
+                            {{task.material.name}} - {{task.material.size | fileSizeFormatter}}
+                        </div>
+                    </div>
+                    <div ngf-no-file-drop>Drag and Drop non disponibile</div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-content layout="row" layout-align="end center" style="background-color: inherit;">
+        <md-button class="md-primary md-raised"
+                   ng-if="isTeacherOnly"
+                   ng-disabled="taskId == 'new' && (taskForm.$invalid || !task.description || !task.solution || !task.material)"
+                   ng-click="save()">Salva
+        </md-button>
+    </md-content>
+</md-card>
+

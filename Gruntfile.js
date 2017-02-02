@@ -19,10 +19,13 @@ module.exports = function (grunt) {
         cdnify: 'grunt-google-cdn'
     });
 
+    require('grunt-string-replace')(grunt);
+
     // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
-        dist: 'dist'
+        dist: 'dist',
+        pkg: require('./package.json') || {version: '0.0.1'}
     };
 
     // Define the configuration for all the tasks
@@ -30,6 +33,20 @@ module.exports = function (grunt) {
 
         // Project settings
         yeoman: appConfig,
+
+        'string-replace': {
+            version: {
+                files: {
+                    './': '<%= yeoman.dist %>/scripts/*.js'
+                },
+                options: {
+                    replacements: [{
+                        pattern: /{{VERSION}}/g,
+                        replacement: appConfig.pkg.version
+                    }]
+                }
+            }
+        },
 
         // Watches files for changes and runs tasks based on the changed files
         watch: {
@@ -420,6 +437,12 @@ module.exports = function (grunt) {
                     cwd: '.tmp/images',
                     dest: '<%= yeoman.dist %>/images',
                     src: ['generated/*']
+                }, {
+                    expand: true,
+                    dot: true,
+                    cwd: 'bower_components/components-font-awesome/fonts',
+                    dest: '<%= yeoman.dist %>/fonts',
+                    src: ['*.*']
                 }]
             },
             styles: {
@@ -494,12 +517,13 @@ module.exports = function (grunt) {
         'concat',
         'ngAnnotate',
         'copy:dist',
-        'cdnify',
+        //'cdnify',
         'cssmin',
         'uglify',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'string-replace:version'
     ]);
 
     grunt.registerTask('default', [

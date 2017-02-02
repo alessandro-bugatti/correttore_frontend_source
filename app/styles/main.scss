@@ -1,2 +1,187 @@
 // bower:scss
+@import "components-font-awesome/scss/font-awesome.scss";
 // endbower
+
+md-toolbar {
+    transition-property: background-color, fill, color, margin !important;
+    -webkit-transition-property: background-color, fill, color, margin !important;
+    margin-top: 0 !important;
+}
+
+md-toolbar.ng-hide:not(.ng-hide-animate) {
+    margin-top: -100px !important;
+    display: flex !important;
+}
+
+.login-container {
+    background-color: white;
+
+    md-input-container {
+        margin: 0;
+    }
+
+    md-input-container:first-child {
+        margin-top: 20px;
+    }
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+md-progress-circular.central {
+    position: absolute;
+    top: calc(50% - 25px);
+    left: calc(50% - 25px);
+    z-index: 9999 !important;
+}
+
+.monospace {
+    font-family: Consolas, Menlo, Monaco, monospace;
+}
+
+h2.cardHeader {
+    margin: 0;
+
+    &.problem {
+        display: inline-block;
+    }
+}
+
+div.drop-box {
+    position: relative;
+    background: #f5f5f5;
+    border: 5px dashed #ccc;
+    width: 27%;
+    text-align: center;
+    padding: 50px 10px;
+    margin-left: 10px;
+
+    -webkit-transition: background-color 100ms ease-in-out;
+    -moz-transition: background-color 100ms ease-in-out;
+    -o-transition: background-color 100ms ease-in-out;
+    -ms-transition: background-color 100ms ease-in-out;
+    transition: background-color 100ms ease-in-out;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &.dragover {
+        background-color: #fbfbfb;
+
+        &.dark {
+            background: #3a3a3a;
+        }
+    }
+
+    .filename {
+        font-size: 0.74em;
+        height: 1.2em;
+        clear: both;
+        font-style: italic;
+    }
+
+    &[disabled="disabled"] {
+        background: #fbfbfb;
+        cursor: no-drop;
+    }
+
+    &.with-margin {
+        width: inherit;
+        margin: 6px 8px;
+    }
+
+    &.dark {
+        background: #303030;
+        border-color: #656565;
+    }
+
+    &.task-submission {
+        width: initial;
+
+        @media (min-width: 960px) {
+            width: 100%;
+        }
+    }
+}
+
+.sidenav-small-title {
+    font-size: 0.84em;
+}
+
+.sidenav-content {
+    height: initial;
+    min-height: initial;
+}
+
+div.inline-progress-circular {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 1.1em;
+
+    > md-progress-circular {
+        transform: scale(.35, .35);
+        margin-top: -16px;
+        display: inline-block;
+        margin-left: -10px;
+    }
+
+    > span {
+        display: inline-block;
+        order: -1;
+    }
+}
+
+md-input-container.select-plus-button {
+    display: flex;
+
+    > md-progress-circular {
+        transform: scale(.45, .45);
+        margin-top: -5px;
+        display: inline-block;
+        order: -2;
+    }
+
+    > md-select {
+        display: inline-block;
+        flex-grow: 1;
+        order: -1;
+    }
+
+    > md-button {
+        display: inline-block;
+        margin: 0;
+        width: 36px;
+        padding: 0;
+    }
+}
+
+md-dialog.submission-popup {
+    width: 600px; /* TODO: controllare se sia corretta e non dia problemi con il resize */
+}
+
+md-icon.fa.check-over-icon {
+    font-size: 20px;
+    position: absolute;
+    top: 5px;
+    left: 50px;
+}
+
+md-list-item md-progress-circular.loading-description {
+    transform: scale(0.26, 0.26);
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    width: inherit !important;
+    height: inherit !important;
+}
+
+.animated-height {
+    -webkit-transition: min-height 0.56s ease-in-out;
+    -moz-transition: min-height 0.56s ease-in-out;
+    -ms-transition: min-height 0.56s ease-in-out;
+    -o-transition: min-height 0.56s ease-in-out;
+    transition: min-height 0.56s ease-in-out;
+}

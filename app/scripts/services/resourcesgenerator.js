@@ -13,9 +13,6 @@ angular.module('frontendStableApp')
             var headersObj = {};
             headersObj[Config.getAuthTokenName()] = authToken;
 
-            var multipartHeadersObj = {'Content-Type': undefined};
-            multipartHeadersObj[Config.getAuthTokenName()] = authToken;
-
             if (!authToken)
                 return $resource(Config.getServerPath() + 'public/' + path);
             else
@@ -26,17 +23,14 @@ angular.module('frontendStableApp')
                     'put': {
                         method: 'PUT', headers: headersObj, params: {
                             studentId: '@studentId',
-                            groupId: '@groupId'
+                            groupId: '@groupId',
+                            testId: '@testId',
+                            taskId: '@taskId'
                         }
                     },
                     'query': {method: 'GET', isArray: true, headers: headersObj},
                     'remove': {method: 'DELETE', headers: headersObj},
-                    'delete': {method: 'DELETE', headers: headersObj},
-                    'create': {
-                        method: 'POST',
-                        transformRequest: angular.identity,
-                        headers: multipartHeadersObj
-                    }
+                    'delete': {method: 'DELETE', headers: headersObj}
                 });
         };
 
@@ -45,7 +39,7 @@ angular.module('frontendStableApp')
         };
 
         this.failureHandler = function (error) {
-            if (error.data.error != undefined)
+            if (error && error.data && error.data.error != undefined)
                 return $q.reject(error.data.error);
 
             return $q.reject(error.data);

@@ -1,0 +1,34 @@
+<md-card layout-fill class="no-padding" ng-if="!testId && !loading">
+    <md-list class="no-padding">
+        <!-- TODO: Aggiungiamo anche le verifiche passate? -->
+        <md-list-item class="md-2-line" ng-repeat="verifica in tests">
+            <md-icon md-font-icon="fa-graduation-cap" class="fa"
+                     style="font-size: 38px; margin-top: 26px;"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{verifica.description}}</h3>
+                <p>
+                    <md-progress-circular ng-if="verifica.loadingResults"
+                                          class="loading-description"></md-progress-circular>
+                    <span ng-if="!verifica.loadingResults" ng-repeat="result in verifica.results"><span ng-if="!$first">, </span>{{result.short_title}}: {{result.score}}/{{result.test_cases}}</span>
+                    <span ng-if="!verifica.loadingResults && verifica.results.length == 0"> - </span>
+                </p>
+            </div>
+            <md-menu class="md-secondary" md-position-mode="target-right target">
+                <md-button class="md-icon-button" ng-click="loadTasks(verifica.id, $event, $mdOpenMenu)"
+                           style="font-size: 1.8em;">
+                    <md-icon md-font-icon="fa-file-code-o" class="fa"></md-icon>
+                </md-button>
+                <md-menu-content width="4" style="padding-top: 0; padding-bottom: 5px;">
+                    <md-progress-linear md-mode="indeterminate"
+                                        ng-style="{'opacity': tasksForTest[verifica.id] ? '0' : '1'}"></md-progress-linear>
+
+                    <md-menu-item ng-repeat="task in tasksForTest[verifica.id]" ng-if="tasksForTest[verifica.id]">
+                        <md-button ng-click="openTask(verifica.id, task.id)">
+                            {{task.title}}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-list-item>
+    </md-list>
+</md-card>

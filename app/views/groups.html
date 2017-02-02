@@ -1,0 +1,43 @@
+<md-card layout-fill class="no-padding" ng-if="!groupId && !loading">
+    <md-button class="md-primary md-raised" ng-if="isTeacherOnly" ng-click="$location.path('/groups/new')">Aggiungi
+        Gruppo
+    </md-button>
+    <md-list class="no-padding">
+        <md-list-item class="md-2-line" ng-repeat="group in groups" ng-click="isTeacherOnly && openGroup(group.id)">
+            <md-icon md-font-icon="fa-users" class="fa"
+                     style="font-size: 38px;"></md-icon>
+            <div class="md-list-item-text">
+                <h3>{{group.description}}</h3>
+                <p>TODO: numero di studenti</p>
+            </div>
+            <md-button ng-if="isTeacherOnly" class="md-secondary md-icon-button md-raised"
+                       ng-click="deleteGroup(group.id, $index, $event)" aria-label="call">
+                <md-icon md-font-icon="fa-trash" class="fa"
+                         style="font-size: 25px;"></md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-card>
+
+<md-card layout-padding ng-if="groupId && !loading">
+    <h2>{{groupId == 'new' ? 'Aggiungi' : 'Modifica'}} Gruppo</h2>
+    <md-content style="background-color: white;">
+        <div>
+            <form name="groupForm">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Descrizione</label>
+                        <input ng-model="group.description" required>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-content layout="row" layout-align="end center" style="background-color: white;">
+        <md-button class="md-primary md-raised"
+                   ng-disabled="groupForm.$invalid"
+                   ng-click="save()">Salva
+        </md-button>
+    </md-content>
+</md-card>
+

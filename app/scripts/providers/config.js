@@ -18,6 +18,8 @@ angular.module('frontendStableApp')
         this.serverHost = null;
         this.authTokenName = null;
 
+        this.clientVersion = '{{VERSION}}';
+
         var exceptionStringValue = "Uninitialized config server values";
 
         this.$get = function () {
@@ -35,6 +37,10 @@ angular.module('frontendStableApp')
                         throw exceptionStringValue;
 
                     return obj.authTokenName;
+                },
+
+                getVersion: function () {
+                    return obj.clientVersion;
                 }
             }
         }

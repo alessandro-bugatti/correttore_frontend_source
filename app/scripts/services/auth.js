@@ -10,8 +10,10 @@
 angular.module('frontendStableApp')
     .service('AuthService', function (ResourcesGeneratorService, $q, $window) {
         var authToken = $window.localStorage.getItem('authToken');
+        var userId = null;
         var isLogged = false;
         var userRole = 0;
+        var loginResponse = {};
 
         var that = this;
 
@@ -30,6 +32,10 @@ angular.module('frontendStableApp')
             'admin': 4,
             'teacher': 2,
             'student': 1
+        };
+
+        this.getLoginResponse = function () {
+            return loginResponse;
         };
 
         this.getRolesArray = function () {
@@ -86,6 +92,14 @@ angular.module('frontendStableApp')
             return authToken;
         };
 
+        this.hasAuthToken = function () {
+            return authToken != undefined && authToken != null;
+        };
+
+        this.getUserId = function () {
+            return userId;
+        };
+
         function assignRoleValue(roleName) {
             userRole = 0;
 
@@ -108,7 +122,9 @@ angular.module('frontendStableApp')
                 .then(function (response) {
                     $window.localStorage.setItem('authToken', response.token);
                     authToken = response.token;
+                    userId = response.id;
                     isLogged = true;
+                    loginResponse = response;
                     assignRoleValue(response.role);
 
                     return response;
@@ -121,6 +137,12 @@ angular.module('frontendStableApp')
                 });
         };
 
+        this.guestLogin = function () {
+            loginResponse = {
+                username: 'ospite'
+            };
+        };
+
         this.logout = function () {
             if (!authToken || !isLogged)
                 return $q.reject('null authToken');
@@ -131,6 +153,7 @@ angular.module('frontendStableApp')
                     authToken = null;
                     isLogged = false;
                     userRole = 0;
+                    loginResponse = null;
 
                     return response;
                 }, function (error) {
@@ -145,6 +168,8 @@ angular.module('frontendStableApp')
             return ResourcesGeneratorService.getResource(authToken, 'info').get().$promise
                 .then(function (response) {
                     isLogged = true;
+                    loginResponse = response;
+                    userId = response.id;
                     assignRoleValue(response.role);
 
                     return response;
