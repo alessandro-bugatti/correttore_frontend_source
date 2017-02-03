@@ -9,6 +9,8 @@
  */
 angular.module('frontendStableApp')
     .controller('ToolbarCtrl', function ($scope, $mdSidenav, $rootScope, $window) {
+        var buttonClickEvent = null;
+
         $scope.openSidenav = function () {
             $mdSidenav('left').open();
         };
@@ -28,7 +30,10 @@ angular.module('frontendStableApp')
             $scope.hide = false;
         });
 
-        $rootScope.$on('loading-start', function () {
+        $rootScope.$on('loading-start', function (eventObject, clickEvent) {
+            if (clickEvent)
+                buttonClickEvent = clickEvent;
+
             $scope.loading = true;
         });
 
@@ -39,6 +44,10 @@ angular.module('frontendStableApp')
         $rootScope.$on('loading-toggle', function () {
             $scope.loading = !$scope.loading;
         });
+
+        $rootScope.getClickEvent = function () {
+            return buttonClickEvent;
+        };
 
         $scope.showBack = false;
 

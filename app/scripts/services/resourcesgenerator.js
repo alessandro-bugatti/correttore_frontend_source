@@ -8,7 +8,7 @@
  * Service of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .service('ResourcesGeneratorService', function (Config, $resource, $q) {
+    .service('ResourcesGeneratorService', function (Config, $resource, $q, $mdDialog, $rootScope) {
         this.getResource = function (authToken, path) {
             var headersObj = {};
             headersObj[Config.getAuthTokenName()] = authToken;
@@ -39,9 +39,25 @@ angular.module('frontendStableApp')
         };
 
         this.failureHandler = function (error) {
-            if (error && error.data && error.data.error != undefined)
-                return $q.reject(error.data.error);
+            $rootScope.$emit('loading-stop');
 
-            return $q.reject(error.data);
+            var errorString = null;
+            if (error && error.data && error.data.error != undefined)
+                errorString = error.data.error;
+
+            console.log(errorString);
+
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .title('Si è verificato un errore')
+                    .textContent('')
+                    .ariaLabel('Messaggio di errore')
+                    .ok('Chiudi')
+                    .targetEvent($rootScope.getClickEvent())
+                    .theme($rootScope.theme)
+            );
+
+            return $q.reject(errorString || error);
         }
     });
