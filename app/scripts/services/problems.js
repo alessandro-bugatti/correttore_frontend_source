@@ -19,7 +19,7 @@ angular.module('frontendStableApp')
                 url: Config.getServerPath() + 'public/submissions/' + problemId,
                 data: {submission: sourceFile}
             })
-                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                .then(ResourcesGeneratorService.successHandler, null, function (evt) {
                 }); // FIXME: usare progresso
         };
 
@@ -35,7 +35,7 @@ angular.module('frontendStableApp')
                 headers: headersObj,
                 data: {submission: sourceFile}
             })
-                .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler, function (evt) {
+                .then(ResourcesGeneratorService.successHandler, null, function (evt) {
                 }); // FIXME: usare progresso
         };
 

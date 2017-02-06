@@ -32,7 +32,6 @@ angular.module('frontendStableApp')
         if ($routeParams.problemId) {
             $scope.problemId = $routeParams.problemId;
             $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-
             $scope.problem = {
                 title: '',
                 short_title: '',
@@ -42,9 +41,7 @@ angular.module('frontendStableApp')
             };
 
             var openSubmissionDetailsDialog = function (ev, score, lines) {
-                var output = ProblemsParserService.parse(lines); // FIXME: ripristinare
-
-                var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+                var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $rootScope.customFullscreen;
                 $mdDialog.show({
                     controller: 'DialogCtrl',
                     templateUrl: 'views/submissiondetails.html',
@@ -59,12 +56,6 @@ angular.module('frontendStableApp')
                             lines: lines
                         }
                     }
-                });
-
-                $scope.$watch(function () {
-                    return $mdMedia('xs') || $mdMedia('sm');
-                }, function (wantsFullScreen) {
-                    $scope.customFullscreen = (wantsFullScreen === true);
                 });
             };
 
@@ -90,6 +81,7 @@ angular.module('frontendStableApp')
                         openSubmissionDetailsDialog(ev, score, lines);
                     }, function (error) { // TODO: error handling
                         $log.warn(error);
+                        $scope.openCompilationWarningDiaog(error, ev);
                         $scope.loadingSubmission = false;
                     });
             };
@@ -106,7 +98,6 @@ angular.module('frontendStableApp')
             } else {
                 promisesArray.push(ProblemsService.getOneProblem($scope.problemId));
             }
-
             var filterTestObject = function (testList) {
                 if (typeof testList != 'object' || testList.length == 0)
                     return null;
@@ -162,5 +153,24 @@ angular.module('frontendStableApp')
         $scope.openProblem = function (problemId) {
             $rootScope.$emit('has-back'); // Mostra tasto indietro nella toolbar
             $location.path('/problems/' + problemId);
-        }
+        };
+
+        $scope.openCompilationWarningDiaog = function (error, ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $rootScope.customFullscreen;
+
+            $mdDialog.show({
+                controller: 'DialogCtrl',
+                templateUrl: 'views/compileroutput.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen,
+                locals: {
+                    items: {
+                        compilerOutput: error.data.replace(/(.*)Compilation errors or warnings:/, ''),
+                        rootScope: $rootScope
+                    }
+                }
+            });
+        };
     });

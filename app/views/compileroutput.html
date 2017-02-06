@@ -1,0 +1,20 @@
+<md-dialog aria-label="Output del Compilatore" md-theme="{{rootScope.theme}}">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Warning ed Errori</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon md-font-icon="fa-close" style="font-size: 20px;" class="fa"
+                             aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2 style="margin-top: 0;">Output del Compilatore</h2>
+                <pre class="wrap-lines">{{compilerOutput}}</pre>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

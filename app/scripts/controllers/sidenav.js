@@ -136,7 +136,7 @@ angular.module('frontendStableApp')
         };
 
         function openAboutDialog(ev) {
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $rootScope.customFullscreen;
             $mdDialog.show({
                 controller: 'DialogCtrl',
                 templateUrl: 'views/about.html',
@@ -152,10 +152,10 @@ angular.module('frontendStableApp')
                 }
             });
 
-            $scope.$watch(function () {
+            $rootScope.$watch(function () {
                 return $mdMedia('xs') || $mdMedia('sm');
             }, function (wantsFullScreen) {
-                $scope.customFullscreen = (wantsFullScreen === true);
+                $rootScope.customFullscreen = (wantsFullScreen === true);
             });
         }
 
