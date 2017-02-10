@@ -8,7 +8,7 @@
  * Service of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .service('TestsService', function (ResourcesGeneratorService, AuthService, $q) {
+    .service('TestsService', function (ResourcesGeneratorService, AuthService, $q, Config, $sce, $http, $window) {
         this.getList = function () {
             if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('admin'))
                 return $q.reject("User not logged in");
@@ -103,6 +103,24 @@ angular.module('frontendStableApp')
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
 
+        this.getClassCSVResults = function (testId) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            return $http.get(Config.getServerPath() + 'tests/' + testId + '/results.csv', {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Authorization-Token': AuthService.getAuthToken()
+                }
+            })
+                .then(function (response) {
+                    var file = new Blob([response.data], {type: 'text/csv'});
+                    var fileURL = $window.URL.createObjectURL(file);
+                    // return $sce.trustAsResourceUrl(fileURL);
+                    return fileURL;
+                }, ResourcesGeneratorService.failureHandler);
+        };
+
         this.getStudentResult = function (studentId, testId) {
             if (!AuthService.isLogged || AuthService.atLeast('admin')) // Solo < di admin
                 return $q.reject("User not logged in");
@@ -115,5 +133,5 @@ angular.module('frontendStableApp')
                 })
                 .$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
-        }
+        };
     });

@@ -17,6 +17,7 @@ angular.module('frontendStableApp')
         this.serverVersion = null;
         this.serverHost = null;
         this.authTokenName = null;
+        this.testResultsReloadInterval = 5000;
 
         this.clientVersion = '{{VERSION}}';
 
@@ -41,6 +42,10 @@ angular.module('frontendStableApp')
 
                 getVersion: function () {
                     return obj.clientVersion;
+                },
+
+                getTestResultsReloadInterval: function () {
+                    return obj.testResultsReloadInterval;
                 }
             }
         }

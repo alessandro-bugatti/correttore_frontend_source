@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TestsCtrl', function (AuthService, TestsService, TasksService, $scope, $location, $routeParams, $log, $rootScope, $q, $mdDialog, $mdMedia) {
+    .controller('TestsCtrl', function (AuthService, TestsService, TasksService, $scope, Config, $window, $interval, $location, $routeParams, $log, $rootScope, $q, $mdDialog, $mdMedia) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -59,20 +59,21 @@ angular.module('frontendStableApp')
             };
 
             $scope.querySearch = function (query) {
-                return query ? $scope.tasks.filter(function (e) {
-                    if (e.is_public != "0") // non pubblico
-                        return false;
+                return query ?
+                    $scope.tasks.filter(function (e) {
+                        if (e.is_public != "0") // non pubblico
+                            return false;
 
-                    var duplicato = self.testTasks.some(function (x) {
-                        return x.title == e.title;
-                    });
+                        var duplicato = self.testTasks.some(function (x) {
+                            return x.title == e.title;
+                        });
 
-                    if (duplicato)
-                        return false;
+                        if (duplicato)
+                            return false;
 
-                    var title = e.title.toLowerCase();
-                    return title.lastIndexOf(query.toLowerCase(), 0) === 0; // startsWith
-                }) : [];
+                        var title = e.title.toLowerCase();
+                        return title.lastIndexOf(query.toLowerCase(), 0) === 0; // startsWith
+                    }) : [];
             };
 
             if ($scope.testId == 'new') {
@@ -80,6 +81,47 @@ angular.module('frontendStableApp')
                 $rootScope.$emit('loading-stop');
             } else {
                 $scope.risultati = [];
+                $scope.loadingResults = false;
+                $scope.loadingTicks = 0;
+                $scope.resultsInterval = null;
+
+                var doResultsCall = function () {
+                    $scope.loadingResults = true;
+                    TestsService.getClassResults($scope.testId).then(function (response) {
+                        $scope.risultati = response;
+                        $scope.loadingTicks = 0;
+                        $scope.loadingResults = false;
+                    });
+                };
+
+                $scope.loadResults = function () {
+                    if ($scope.resultsInterval)
+                        $interval.cancel($scope.resultsInterval);
+
+                    doResultsCall();
+                    $scope.resultsInterval = $interval(function () {
+                        if ($scope.loadingResults) return;
+
+                        if ($scope.loadingTicks >= 100) doResultsCall();
+                        else $scope.loadingTicks++;
+                    }, Config.getTestResultsReloadInterval() / 100);
+                };
+
+
+                $scope.loadingCSV = false;
+                $scope.downloadCSV = function () {
+                    $scope.loadingCSV = true;
+                    TestsService.getClassCSVResults($scope.testId)
+                        .then(function (fileURL) {
+                            var a = document.getElementById('fileDownload');
+                            a.href = fileURL;
+                            a.download = $scope.test.description + '.csv';
+                            a.click();
+
+                            $window.URL.revokeObjectURL(fileURL);
+                            $scope.loadingCSV = false;
+                        });
+                };
 
                 TestsService.getList() // TODO: ci vorrebbe una chiamata per ottenere un singolo test
                     .then(function (response) {
@@ -94,25 +136,23 @@ angular.module('frontendStableApp')
 
                         return $q.all([
                             TestsService.getTasks($scope.testId),
-                            TestsService.getClassResults($scope.testId),
-                            TasksService.getList()]
-                        );
+                            TasksService.getList()
+                        ]);
                     })
                     .then(function (responses) {
-                        console.log(arguments);
-
                         var testTasks = responses[0];
-                        var results = responses[1];
-                        var tasksList = responses[2];
+                        var tasksList = responses[1];
 
                         self.testTasks = testTasks;
                         originalTestTasks = JSON.parse(JSON.stringify(testTasks)); // Deep copy
 
-                        $scope.risultati = results;
                         $scope.tasks = tasksList;
 
                         $scope.loading = false;
                         $rootScope.$emit('loading-stop');
+
+                        if ($scope.test.is_on == '1')
+                            $scope.loadResults();
                     });
 
                 $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm'); // TODO: portare nel rootScope insieme al watch
