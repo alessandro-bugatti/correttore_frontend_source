@@ -1,5 +1,4 @@
 // bower:scss
-@import "components-font-awesome/scss/font-awesome.scss";
 // endbower
 
 md-toolbar {
@@ -48,7 +47,14 @@ h2.cardHeader {
     }
 }
 
-div.drop-box {
+div.tips-container {
+    width: inherit !important;
+    margin-left: 0 !important;
+    padding: 30px 10px !important;
+    border-radius: 7px;
+}
+
+div.drop-box, div.tips-container {
     position: relative;
     background: #f5f5f5;
     border: 5px dashed #ccc;

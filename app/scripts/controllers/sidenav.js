@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('SidenavCtrl', function ($scope, $mdMedia, $mdDialog, $mdSidenav, $location, Config, $rootScope, AuthService) {
+    .controller('SidenavCtrl', function ($scope, $mdMedia, $mdDialog, $mdSidenav, $mdTheming, $location, Config, $rootScope, AuthService, Tips) {
         $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
 
         $scope.authService = AuthService;
@@ -137,6 +137,11 @@ angular.module('frontendStableApp')
 
         function openAboutDialog(ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $rootScope.customFullscreen;
+            var tipsObject = {
+                value: Tips.nextTip()
+            };
+
+            console.log($rootScope.theme);
             $mdDialog.show({
                 controller: 'DialogCtrl',
                 templateUrl: 'views/about.html',
@@ -147,7 +152,12 @@ angular.module('frontendStableApp')
                 locals: {
                     items: {
                         clientVersion: Config.getVersion(),
-                        rootScope: $rootScope
+                        rootScope: $rootScope,
+                        tip: tipsObject,
+                        darkTheme: $mdTheming.THEMES[$rootScope.theme].isDark,
+                        next: function () {
+                            tipsObject.value = Tips.nextTip()
+                        }
                     }
                 }
             });

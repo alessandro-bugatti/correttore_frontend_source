@@ -1,4 +1,4 @@
-<md-dialog aria-label="About Us" md-theme="{{rootScope.theme}}">
+<md-dialog aria-label="About Us" md-theme="{{rootScope.theme}}" style="width: 70%;">
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -13,9 +13,17 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <h2 style="margin-top: 0;">Correttore</h2>
-                <p>
-                    Questa parte è sicuramente da riscrivere, ho tolto almeno il vecchio testo di prova.
-                </p>
+
+                <h3 style="margin-bottom: 3px;">Lo sapevi che...</h3>
+                <div class="tips-container" ng-class="{'dark': darkTheme}">
+                    <p>
+                        {{tip.value}}
+                    </p>
+                </div>
+                <div layout="row" layout-align="end center">
+                    <md-button class="md-primary md-raised" ng-click="next()" style="margin-right: 0;">Prossimo
+                    </md-button>
+                </div>
 
                 <h5>Versione: {{clientVersion}}</h5>
             </div>
