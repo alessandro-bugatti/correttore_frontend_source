@@ -75,7 +75,7 @@
                     </md-input-container>
                 </div>
 
-                <div layout-gt-sm="row" style="justify-content: space-around;">
+                <div layout-gt-sm="row" style="justify-content: space-between;">
                     <div ngf-select ngf-drop ngf-change="setFile('description', $files)" class="drop-box"
                          ngf-drag-over-class="'dragover'" ng-style="mdMedia('gt-sm') ? {} : {'width': 'inherit'}"
                          ng-class="{'dark': currentThemeObj.isDark}"
@@ -114,8 +114,33 @@
             </form>
         </div>
     </md-content>
-    <md-content layout="row" layout-align="end center" style="background-color: inherit;">
+
+    <md-content ng-if="showingPDF && !loadingPDF" style="background-color: inherit; padding: 0 8px; margin-top: 5px;">
+        <md-button class="md-primary md-raised" aria-label="Nascondi PDF" ng-click="togglePDF()"
+                   style="margin-left: 0;">
+            Nascondi PDF
+        </md-button>
+
+        <embed style="width: 100%; height: 85vh; margin-top: 8px;" ng-src="{{taskPDF_URL}}"></embed>
+    </md-content>
+
+    <!-- Se sto mostrando il PDF nascondo questo pulsante e metto il layout a end per tenere il "salva" a destra -->
+    <md-content layout="row" layout-align="{{showingPDF ?  'end' : 'space-between'}} center"
+                style="background-color: inherit;">
+        <md-button class="md-primary md-raised" aria-label="Mostra PDF" ng-hide="showingPDF" ng-click="togglePDF()"
+                   style="margin-left: 0;" ng-disabled="taskId == 'new'">
+            <md-progress-circular
+                ng-if="loadingPDF"
+                class="md-warn"
+                md-mode="indeterminate"
+                md-diameter="20px"
+                style="margin: auto;"
+            ></md-progress-circular>
+            <span ng-if="!loadingPDF">Mostra PDF</span>
+        </md-button>
+
         <md-button class="md-primary md-raised"
+                   style="margin-right: 0;"
                    ng-if="isTeacherOnly"
                    ng-disabled="taskId == 'new' && (taskForm.$invalid || !task.description || !task.solution || !task.material)"
                    ng-click="save()">Salva

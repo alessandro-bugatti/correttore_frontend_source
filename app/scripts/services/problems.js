@@ -68,7 +68,7 @@ angular.module('frontendStableApp')
         };
 
         this.testGetPDF = function (problemId) {
-            if (!AuthService.isLogged || !AuthService.atLeast('student') || AuthService.atLeast('teacher')) // Permesso solo agli studenti (sudent <= user < teacher)
+            if (!AuthService.isLogged || !AuthService.atLeast('teacher')) // <= teacher
                 return $q.reject("User not logged in");
 
             return $http.get(Config.getServerPath() + 'problems/' + problemId + '.pdf', {

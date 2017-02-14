@@ -8,7 +8,7 @@
  * Controller of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .controller('TasksCtrl', function (AuthService, TasksService, CategoriesService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog) {
+    .controller('TasksCtrl', function (AuthService, TasksService, ProblemsService, CategoriesService, $scope, $location, $routeParams, $log, $rootScope, $mdMedia, $mdTheming, $mdDialog) {
         if (!AuthService.isLogged()) {
             $location.search({redirect: $location.path()});
             $location.path('/login');
@@ -123,6 +123,30 @@ angular.module('frontendStableApp')
                         $location.path('/tasks');
                     });
             }
+
+            $scope.showingPDF = false;
+            $scope.loadingPDF = false;
+            $scope.taskPDF_URL = null;
+
+            $scope.togglePDF = function () {
+                if ($scope.taskId == 'new') return;
+
+                if ($scope.showingPDF) {
+                    $scope.showingPDF = false;
+                    return;
+                }
+
+                $scope.loadingPDF = true;
+
+                ProblemsService.testGetPDF($scope.taskId)
+                    .then(function (fileURL) {
+                        $scope.showingPDF = true;
+                        $scope.taskPDF_URL = fileURL;
+                    })
+                    .finally(function () {
+                        $scope.loadingPDF = false;
+                    });
+            };
 
             $scope.save = function () {
                 $rootScope.$emit('loading-start');

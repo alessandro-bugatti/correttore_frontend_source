@@ -125,6 +125,8 @@ angular.module('frontendStableApp')
                             a.click();
 
                             $window.URL.revokeObjectURL(fileURL);
+                        })
+                        .finally(function () {
                             $scope.loadingCSV = false;
                         });
                 };
