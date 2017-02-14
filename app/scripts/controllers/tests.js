@@ -85,6 +85,12 @@ angular.module('frontendStableApp')
                 $scope.loadingTicks = 0;
                 $scope.resultsInterval = null;
 
+                // L'utente ha cambiato pagina
+                $scope.$on('$routeChangeStart', function () {
+                    if ($scope.resultsInterval)
+                        $interval.cancel($scope.resultsInterval);
+                });
+
                 var doResultsCall = function () {
                     $scope.loadingResults = true;
                     TestsService.getClassResults($scope.testId).then(function (response) {
