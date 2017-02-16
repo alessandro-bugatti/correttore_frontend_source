@@ -30,6 +30,19 @@
                                     Risultato: {{task.score}}/{{task.test_cases}}
                                 </p>
                             </div>
+
+                            <md-button class="md-secondary md-icon-button md-raised"
+                                       ng-click="downloadTaskSources(task, $index, downloading)" aria-label="call">
+                                <md-progress-circular
+                                    ng-if="downloading[$index]"
+                                    class="md-primary"
+                                    md-mode="indeterminate"
+                                    md-diameter="20px"
+                                    style="margin: auto;"
+                                ></md-progress-circular>
+                                <md-icon md-font-icon="fa-download" ng-if="!downloading[$index]" class="fa"
+                                         style="font-size: 25px;"></md-icon>
+                            </md-button>
                         </md-list-item>
                     </md-list>
 

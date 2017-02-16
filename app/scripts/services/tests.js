@@ -115,9 +115,7 @@ angular.module('frontendStableApp')
             })
                 .then(function (response) {
                     var file = new Blob([response.data], {type: 'text/csv'});
-                    var fileURL = $window.URL.createObjectURL(file);
-                    // return $sce.trustAsResourceUrl(fileURL);
-                    return fileURL;
+                    return $window.URL.createObjectURL(file);
                 }, ResourcesGeneratorService.failureHandler);
         };
 
@@ -134,4 +132,20 @@ angular.module('frontendStableApp')
                 .$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
         };
+
+        this.downloadSources = function (taskId, studentId, testId) {
+            if (!AuthService.isLogged || !AuthService.allowedForbidden('teacher', 'admin'))
+                return $q.reject("User not logged in");
+
+            return $http.get(Config.getServerPath() + 'submissions/tests/' + testId + '/tasks/' + taskId + '/users/' + studentId, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'X-Authorization-Token': AuthService.getAuthToken()
+                }
+            })
+                .then(function (response) {
+                    var file = new Blob([response.data], {type: 'text/plain'});
+                    return $window.URL.createObjectURL(file);
+                }, ResourcesGeneratorService.failureHandler);
+        }
     });

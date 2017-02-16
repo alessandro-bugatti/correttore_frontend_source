@@ -24,6 +24,14 @@ angular.module('frontendStableApp')
         var self = this;
         $scope.$location = $location;
 
+        function download(fileURL, fileName) {
+            var a = document.getElementById('fileDownload');
+            a.href = fileURL;
+            a.download = fileName;
+            a.click();
+            $window.URL.revokeObjectURL(fileURL);
+        }
+
         var originalTestTasks = [];
         self.testTasks = [];
 
@@ -119,12 +127,7 @@ angular.module('frontendStableApp')
                     $scope.loadingCSV = true;
                     TestsService.getClassCSVResults($scope.testId)
                         .then(function (fileURL) {
-                            var a = document.getElementById('fileDownload');
-                            a.href = fileURL;
-                            a.download = $scope.test.description + '.csv';
-                            a.click();
-
-                            $window.URL.revokeObjectURL(fileURL);
+                            download(fileURL, $scope.test.description + '.csv');
                         })
                         .finally(function () {
                             $scope.loadingCSV = false;
@@ -166,7 +169,7 @@ angular.module('frontendStableApp')
                 $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm'); // TODO: portare nel rootScope insieme al watch
                 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
 
-                $scope.openRisultatiStudente = function (studenteId, testId, score, fullName, event) {
+                $scope.openRisultatiStudente = function (studenteId, testId, score, fullName, username, event) {
                     var result = {};
 
                     $mdDialog.show({
@@ -181,7 +184,19 @@ angular.module('frontendStableApp')
                                 rootScope: $rootScope,
                                 result: result,
                                 score: score,
-                                fullName: fullName
+                                fullName: fullName,
+                                downloading: {},
+                                downloadTaskSources: function (task, taskIndex, downloading) {
+                                    downloading[taskIndex] = true;
+
+                                    TestsService.downloadSources(task.task_id, studenteId, testId)
+                                        .then(function (fileURL) {
+                                            download(fileURL, username + '_' + task.short_title + '.c');
+                                        })
+                                        .finally(function () {
+                                            downloading[taskIndex] = false;
+                                        });
+                                }
                             }
                         }
                     });

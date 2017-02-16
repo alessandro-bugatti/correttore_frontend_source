@@ -110,7 +110,7 @@
     <md-content style="background-color: white; padding: 0;">
         <md-list class="no-padding">
             <md-list-item class="md-2-line" ng-repeat="studente in risultati"
-                          ng-click="openRisultatiStudente(studente.ID, testId, studente.result, studente.surname + ' ' + studente.name, $event)">
+                          ng-click="openRisultatiStudente(studente.ID, testId, studente.result, studente.surname + ' ' + studente.name, studente.username, $event)">
                 <md-icon md-font-icon="fa-file-code-o" class="fa"
                          style="font-size: 38px;"></md-icon>
                 <md-icon ng-if="studente.result == 100" md-font-icon="fa-check-circle-o"
