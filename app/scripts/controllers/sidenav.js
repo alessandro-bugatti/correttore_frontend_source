@@ -28,6 +28,13 @@ angular.module('frontendStableApp')
 
         $scope.menuEntries = [
             {
+                title: 'Home',
+                description: 'Pagina principale',
+                icon: 'home',
+                allowed: '*',
+                link: '/'
+            },
+            {
                 title: 'Docenti',
                 description: 'Gestisci i docenti',
                 icon: 'graduation-cap',

@@ -8,7 +8,7 @@
  * Service of the frontendStableApp
  */
 angular.module('frontendStableApp')
-    .service('ProblemsService', function (ResourcesGeneratorService, Upload, Config, AuthService, $sce, $http) {
+    .service('ProblemsService', function (ResourcesGeneratorService, Upload, Config, AuthService, $sce, $http, $q) {
         this.getList = function () {
             return ResourcesGeneratorService.getResource(null, 'problems').query().$promise
                 .then(ResourcesGeneratorService.successHandler, ResourcesGeneratorService.failureHandler);
@@ -68,7 +68,7 @@ angular.module('frontendStableApp')
         };
 
         this.testGetPDF = function (problemId) {
-            if (!AuthService.isLogged || !AuthService.atLeast('teacher')) // <= teacher
+            if (!AuthService.isLogged || !AuthService.atLeast('student')) // <= teacher
                 return $q.reject("User not logged in");
 
             return $http.get(Config.getServerPath() + 'problems/' + problemId + '.pdf', {
